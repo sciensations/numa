@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lcnbr.github.io/numa/sitemap.xml

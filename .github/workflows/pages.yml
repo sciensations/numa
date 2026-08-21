@@ -1,0 +1,81 @@
+name: Build and publish Numa
+
+'on':
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NUMA_PROFILE: pilot
+  TYPST_VERSION: 0.15.1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check out source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Install Typst 0.15.1
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="typst-x86_64-unknown-linux-musl.tar.xz"
+          url="https://github.com/typst/typst/releases/download/v${TYPST_VERSION}/${archive}"
+          curl --fail --location --retry 3 "$url" --output "$RUNNER_TEMP/$archive"
+          tar -xJf "$RUNNER_TEMP/$archive" --directory "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/typst-x86_64-unknown-linux-musl" >> "$GITHUB_PATH"
+
+      - name: Install QR validation dependencies
+        run: python3 -m pip install --disable-pip-version-check --requirement scripts/requirements-qa.txt
+
+      - name: Build
+        run: python3 scripts/build.py
+
+      - name: Compile teacher print fixtures
+        run: |
+          python3 scripts/compile_print.py cards
+          python3 scripts/compile_print.py response s03
+
+      - name: Check
+        run: python3 scripts/check.py --profile "$NUMA_PROFILE"
+
+      - name: Upload pull-request build
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: numa-dist-${{ github.sha }}
+          path: dist/
+          if-no-files-found: error
+
+      - name: Configure GitHub Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+
+      - name: Upload GitHub Pages artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: dist/
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0
