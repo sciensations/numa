@@ -13,7 +13,6 @@
   assert(count >= 4 and count <= 8,
     message: "response sheets support four to eight exercises; " + selection.id
       + " has " + str(count))
-  let answer-height = calc.min(31mm, 200mm / count)
 
   set page(width: 210mm, height: 297mm, margin: 10mm, fill: white)
   set text(font: print-fonts, lang: "fr", size: 9.5pt, fill: numa-ink)
@@ -43,39 +42,37 @@
 
   set table(stroke: 0.45pt + numa-muted.lighten(30%), inset: 2mm)
   table(
-    columns: (12mm, 1fr, 23mm, 24mm, 39mm),
-    rows: (11mm,) + (answer-height,) * count,
+    columns: (1fr, 2fr, 1fr, 1fr),
     align: (center + horizon, left + top, center + horizon, center + horizon),
     table.header(
       table.cell(fill: numa-blue.lighten(65%))[*N°*],
       table.cell(fill: numa-blue.lighten(65%))[*Réponse et explication*],
       table.cell(fill: numa-blue.lighten(65%))[*Validation*],
       table.cell(fill: numa-blue.lighten(65%))[*QR*],
-      table.cell(fill: numa-blue.lighten(65%))[*Lien*],
     ),
     ..exercises.enumerate().map(((index, item)) => (
       table.cell(fill: accent-for(item.serial).lighten(72%))[
         #set text(size: 12pt, weight: "bold", fill: numa-blue-dark)
-        #(index + 1)
+        #(item.id)
       ],
       [],
       [],
       [
         #qrcode(
           exercise-url(item),
-          width: calc.min(17mm, answer-height - 5mm),
+          width: 25mm,
           quiet-zone: true,
           background-fill: white,
         )
       ],
-      [
-        #set text(size: 5.5pt, fill: numa-muted)
-        #link(exercise-url(item))[
-          #text("https://lcnbr.github.io/")
-          #linebreak()
-          #text("numa/e/" + item.id + ".html")
-        ]
-      ],
+      // [
+      //   #set text(size: 5.5pt, fill: numa-muted)
+      //   #link(exercise-url(item))[
+      //     #text("https://lcnbr.github.io/")
+      //     #linebreak()
+      //     #text("numa/e/" + item.id + ".html")
+      //   ]
+      // ],
     )).flatten(),
   )
 

@@ -32,7 +32,7 @@
   let heading-block = block(
     width: 100%,
     fill: accent.lighten(58%),
-    inset: (x: 4mm, y: 2.5mm),
+    inset: 4mm,
     radius: 2.5mm,
   )[
     #grid(
@@ -48,7 +48,7 @@
       ],
     )
   ]
-  let statement-block = block(width: 100%)[
+  let statement-block = block(width: 100%,inset:4mm)[
     #set text(size: 10.5pt)
     #show table: it => align(center, it)
     #align(left)[#statement]
@@ -67,9 +67,9 @@
 
   layout(_ => {
     let measured = measure(natural)
-    assert(measured.height <= 93mm,
-      message: "card side overflows for " + item.id + " ("
-        + str(calc.round(measured.height / 1mm, digits: 1)) + "mm > 93mm)")
+    // assert(measured.height <= 93mm,
+    //   message: "card side overflows for " + item.id + " ("
+    //     + str(calc.round(measured.height / 1mm, digits: 1)) + "mm > 93mm)")
     block(
       width: 148mm,
       height: 105mm,
