@@ -48,10 +48,12 @@ def close_size(actual: tuple[float, float], expected: tuple[float, float]) -> bo
 
 
 def run(profile: str, output: Path = OUTPUT) -> None:
-    selections, _exercises = check_schema(profile, quiet=True)
+    selections, exercises = check_schema(profile, quiet=True)
     files: list[tuple[Path, int, tuple[float, float]]] = []
     if profile == "pilot":
-        files.append((output / "card-batch.pdf", 4, A4_LANDSCAPE))
+        published_count = sum(item.status == "published" for item in exercises)
+        card_pages = 2 * ((published_count + 3) // 4)
+        files.append((output / "card-batch.pdf", card_pages, A4_LANDSCAPE))
     for selection in selections:
         files.append((output / f"{selection.id}-responses.pdf", 1, A4_PORTRAIT))
 

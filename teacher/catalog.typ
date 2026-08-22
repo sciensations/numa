@@ -23,14 +23,13 @@ Identifiant correspondant : *#upper(exercise-id(next-serial))*
 == Catalogue
 
 #table(
-  columns: (12mm, 22mm, 35mm, 1fr, 25mm),
+  columns: (12mm, 22mm, 1fr, 25mm),
   inset: 2mm,
   stroke: 0.4pt + numa-muted.lighten(35%),
-  table.header([*N°*], [*ID*], [*Emoji*], [*Titre*], [*Difficulté*]),
+  table.header([*N°*], [*ID*], [*Titre*], [*Difficulté*]),
   ..exercises.map(item => (
     [#item.serial],
     [#upper(item.id)],
-    [#text(font: "Noto Color Emoji", size: 8pt)[#item.emojis.join(" ")]],
     item.title,
     [#item.difficulty / 5],
   )).flatten(),

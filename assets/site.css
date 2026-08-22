@@ -70,7 +70,8 @@ a:focus-visible, summary:focus-visible { outline: 3px solid var(--blue-dark); ou
 }
 
 .brand-link { display: inline-flex; align-items: center; }
-.site-logo { display: block; width: auto; height: 3.1rem; }
+.site-logo { display: block; flex: none; line-height: 0; }
+.site-logo > svg { display: block; }
 .tagline { color: var(--blue-dark); font-weight: 700; }
 .site-main { padding-block: clamp(2rem, 7vw, 5rem); }
 .site-footer { padding-block: 2rem 3rem; color: var(--muted); font-size: .9rem; }
@@ -143,13 +144,6 @@ h2 { margin-top: 2.4rem; }
 }
 .catalog-card a:hover { border-color: var(--teal); transform: translateY(-1px); }
 .catalog-card__id { color: var(--blue-dark); font-size: .78rem; font-weight: 700; letter-spacing: .06em; }
-.emoji-signature {
-  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
-  font-size: 1.35rem;
-  letter-spacing: .08em;
-  line-height: 1.2;
-}
-.emoji-signature--large { display: block; margin-bottom: .75rem; font-size: 2rem; }
 .catalog-card__title { color: var(--ink); font-size: 1.18rem; }
 .catalog-card__meta { color: var(--muted); font-size: .88rem; }
 .chip-row, .metadata-row { display: flex; flex-wrap: wrap; gap: .4rem; }

@@ -1,12 +1,6 @@
 #import "../lib/model.typ": published-exercises, source-attribution
+#import "../lib/logo.typ": numa-logo
 #import "../lib/theme.typ": *
-#import "../lib/emoji.typ":star-score 
-
-#let _logo-path = "../assets/brand/numa-logo.png"
-#let _emoji-line(item, size: 11pt) = text(
-  font: "Noto Color Emoji",
-  size: size,
-)[#item.emojis.join(h(1mm))]
 
 
 #let _front-body(item) = {
@@ -104,20 +98,16 @@
       radius: 3mm,
       inset: 7mm,
     )[
-      #align(right,star-score(item.difficulty))
       #align(center + horizon)[
         #v(2fr)
-        #image(_logo-path, width: 52mm, alt: "Numa")
+        #numa-logo(width: 52mm)
         #v(7mm)
         #set text(size: 13pt, weight: "bold", fill: numa-blue-dark)
         #item.title
-        #v(2fr)
-        #_emoji-line(item, size: 14pt)
-       #v(1fr)
-        
+        #v(1fr)
         #set text(size: 8pt, weight: "regular", fill: numa-muted)
         ID #upper(item.id)
-         #v(2fr)
+        #v(2fr)
       ]
       #text(size: 2.3mm,align(left,emph(source-attribution(item.source))))
     ]

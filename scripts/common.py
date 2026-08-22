@@ -42,7 +42,14 @@ GOLDEN_IDS = {
     4: "402f01",
     5: "25ecd7",
     6: "bb6cb4",
+    7: "d72deb",
+    8: "b26606",
+    9: "0e41af",
+    10: "4b5936",
+    11: "bf18c0",
+    12: "765d0c",
 }
+PILOT_SELECTION_IDS = {"s01", "s03"}
 
 
 class CheckError(RuntimeError):
@@ -54,7 +61,6 @@ class Exercise:
     path: Path
     serial: int
     id: str
-    emojis: tuple[str, ...]
     status: str
     topics: tuple[str, ...]
     difficulty: float
@@ -154,7 +160,6 @@ def load_exercises() -> list[Exercise]:
                 path=path,
                 serial=serial,
                 id=str(item["id"]),
-                emojis=tuple(str(value) for value in item["emojis"]),
                 status=status,
                 topics=tuple(str(value) for value in item["topics"]),
                 difficulty=float(item["difficulty"]),
@@ -189,9 +194,10 @@ def load_selections() -> list[Selection]:
 def selected_selections(profile: str, selections: Iterable[Selection]) -> list[Selection]:
     selections = list(selections)
     if profile == "pilot":
-        selected = [selection for selection in selections if selection.id == "s03"]
-        if not selected:
-            raise CheckError("pilot profile requires selection s03")
+        selected = [selection for selection in selections if selection.id in PILOT_SELECTION_IDS]
+        missing = PILOT_SELECTION_IDS - {selection.id for selection in selected}
+        if missing:
+            raise CheckError(f"pilot profile requires selections {sorted(missing)}")
         return selected
     if profile == "full":
         return selections
@@ -201,7 +207,11 @@ def selected_selections(profile: str, selections: Iterable[Selection]) -> list[S
 def selected_exercises(profile: str, exercises: Iterable[Exercise]) -> list[Exercise]:
     exercises = list(exercises)
     if profile == "pilot":
-        return [exercise for exercise in exercises if "s03" in exercise.selections]
+        return [
+            exercise
+            for exercise in exercises
+            if PILOT_SELECTION_IDS.intersection(exercise.selections)
+        ]
     if profile == "full":
         return exercises
     raise CheckError(f"unknown validation profile {profile!r}; use pilot or full")

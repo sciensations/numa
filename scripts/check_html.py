@@ -24,11 +24,19 @@ class References(html.parser.HTMLParser):
         self.metas: list[dict[str, str | None]] = []
         self.stylesheets: list[str] = []
         self.tag_counts: Counter[str] = Counter()
+        self.accessible_numa_logos = 0
         self._title_chunks: list[str] | None = None
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         attributes = dict(attrs)
         self.tag_counts[tag] += 1
+        classes = str(attributes.get("class", "")).split()
+        if (
+            "site-logo" in classes
+            and attributes.get("role") == "img"
+            and attributes.get("aria-label") == "Numa"
+        ):
+            self.accessible_numa_logos += 1
         if tag == "html":
             self.html_langs.append(attributes.get("lang"))
         if tag == "title":
@@ -166,6 +174,13 @@ def run(profile: str = "pilot", dist: Path = DIST, site_url: str = SITE_URL) -> 
             errors.append(f"{rel(path)}: cannot parse HTML: {exc}")
         parsed[path.resolve()] = parser
         errors.extend(validate_page_metadata(path.resolve(), parser, dist, site_url))
+        if parser.accessible_numa_logos != 1:
+            errors.append(
+                f"{rel(path)}: expected one accessible inline Numa logo, "
+                f"found {parser.accessible_numa_logos}"
+            )
+        if parser.tag_counts["svg"] < 1:
+            errors.append(f"{rel(path)}: CeTZ Numa logo did not export as inline SVG")
 
     _, exercises = check_schema(profile, quiet=True)
     published = [exercise for exercise in exercises if exercise.status == "published"]
@@ -202,7 +217,6 @@ def run(profile: str = "pilot", dist: Path = DIST, site_url: str = SITE_URL) -> 
             'name="selection"',
             'src="assets/site.js"',
             'data-difficulty=',
-            'data-emojis=',
             'data-selections=',
         )
         for hook in required_catalog_hooks:
@@ -210,13 +224,6 @@ def run(profile: str = "pilot", dist: Path = DIST, site_url: str = SITE_URL) -> 
                 errors.append(f"dist/index.html: missing catalog hook {hook!r}")
         if not (dist / "assets" / "site.js").is_file():
             errors.append("dist/assets/site.js: missing catalog interaction script")
-        for exercise in published:
-            signature = " ".join(exercise.emojis)
-            page = dist / "e" / f"{exercise.id}.html"
-            if signature not in index_source:
-                errors.append(f"dist/index.html: missing emoji signature {signature}")
-            if page.is_file() and signature not in page.read_text(encoding="utf-8"):
-                errors.append(f"{rel(page)}: missing emoji signature {signature}")
         details = sum(
             parsed[path].tag_counts["details"]
             for path in actual_exercise_pages
@@ -234,6 +241,43 @@ def run(profile: str = "pilot", dist: Path = DIST, site_url: str = SITE_URL) -> 
                 f"templates/site.typ: missing native {tag} disclosure element path"
             )
 
+    logo_template = read_text(ROOT / "lib" / "logo.typ")
+    if '#import "@preview/cetz:0.5.2"' not in logo_template:
+        errors.append("lib/logo.typ: CeTZ version must remain pinned to 0.5.2")
+    traced_surface_count = logo_template.count("svg-path(")
+    if traced_surface_count < 8:
+        errors.append(
+            "lib/logo.typ: expected the non-boolean glyphs to remain filled-surface "
+            f"traces; found {traced_surface_count} paths"
+        )
+    boolean_ops = {
+        op: logo_template.count(f'op: "{op}"')
+        for op in ("union", "intersection", "difference")
+    }
+    if boolean_ops["union"] < 2 or boolean_ops["intersection"] < 2:
+        errors.append(
+            "lib/logo.typ: the m must use CeTZ unions and computed intersections"
+        )
+    if boolean_ops["difference"] < 1 or "circle(" not in logo_template:
+        errors.append(
+            "lib/logo.typ: the m must subtract true circular counter surfaces"
+        )
+    stroke_values = set(re.findall(r"stroke:\s*([^,\n\)]+)", logo_template))
+    # `stroke` is the m helper's forwarded parameter; every visible caller
+    # supplies the literal 0 mm value, while Boolean operands pass `none`.
+    invalid_strokes = sorted(stroke_values - {"none", "0mm", "stroke"})
+    if invalid_strokes:
+        errors.append(
+            "lib/logo.typ: every surface must use no stroke or a literal 0 mm "
+            f"stroke; found {invalid_strokes}"
+        )
+    for stroked_primitive in ("line(", "bezier("):
+        if stroked_primitive in logo_template:
+            errors.append(
+                "lib/logo.typ: logo must use closed filled surfaces, not "
+                f"{stroked_primitive[:-1]} primitives"
+            )
+
     not_found = (dist / "404.html").resolve()
     not_found_parser = parsed.get(not_found)
     if not_found_parser is None:
@@ -241,7 +285,6 @@ def run(profile: str = "pilot", dist: Path = DIST, site_url: str = SITE_URL) -> 
     else:
         required_absolute = {
             f"{site_url.rstrip('/')}/assets/site.css",
-            f"{site_url.rstrip('/')}/assets/brand/numa-logo.png",
             f"{site_url.rstrip('/')}/index.html",
         }
         found_urls = {url for _, url in not_found_parser.urls}
@@ -251,6 +294,12 @@ def run(profile: str = "pilot", dist: Path = DIST, site_url: str = SITE_URL) -> 
                 "dist/404.html: missing absolute base URLs: "
                 + ", ".join(missing_absolute)
             )
+
+    legacy_logo = dist / "assets" / "brand" / "numa-logo.png"
+    if legacy_logo.exists():
+        errors.append(
+            "dist/assets/brand/numa-logo.png: legacy raster logo must not be bundled"
+        )
 
     math_exercises = [
         exercise for exercise in published if has_typst_math(exercise.text)

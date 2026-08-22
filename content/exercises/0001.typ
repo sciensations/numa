@@ -1,7 +1,7 @@
 #import "../../lib/model.typ": exercise
 
 #let item = exercise(
-  serial: 20,
+  serial: 1,
   title: [La relève de la Garde],
   topics: ("arithmetique", "logique-strategie"),
   difficulty: 1.5,

@@ -26,7 +26,7 @@ from common import (
     selected_selections,
 )
 
-PROFILES = {"pilot": (1, 6, 6), "full": (13, 77, 77)}
+PROFILES = {"pilot": (2, 12, 12), "full": (14, 83, 83)}
 ID_RE = re.compile(r"[0-9a-f]{6}")
 SELECTION_RE = re.compile(r"[a-z][a-z0-9-]*")
 DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}")
@@ -77,17 +77,12 @@ def validate_exercises(exercises: list[Exercise]) -> list[str]:
     errors: list[str] = []
     serials = Counter(item.serial for item in exercises)
     ids = Counter(item.id for item in exercises)
-    emoji_signatures = Counter(item.emojis for item in exercises)
     for serial, count in serials.items():
         if count > 1:
             errors.append(f"duplicate exercise serial {serial}")
     for identifier, count in ids.items():
         if count > 1:
             errors.append(f"duplicate exercise id {identifier!r}")
-    for signature, count in emoji_signatures.items():
-        if count > 1:
-            errors.append(f"emoji signature collision {' '.join(signature)}")
-
     for item in exercises:
         location = rel(item.path)
         missing = [field for field in REQUIRED_EXERCISE_FIELDS if not has_field(item.text, field)]
@@ -97,8 +92,6 @@ def validate_exercises(exercises: list[Exercise]) -> list[str]:
             errors.append(f"{location}: filename must be {item.serial:04d}.typ")
         if ID_RE.fullmatch(item.id) is None:
             errors.append(f"{location}: invalid derived id {item.id!r}")
-        if len(item.emojis) != 4 or len(set(item.emojis)) != 4:
-            errors.append(f"{location}: derived emoji signature needs four distinct symbols")
         if item.status not in VALID_STATUSES:
             errors.append(f"{location}: status must be draft or published")
         if not 1 <= item.difficulty <= 5 or item.difficulty * 4 != round(item.difficulty * 4):
@@ -201,7 +194,7 @@ def run(profile: str, quiet: bool = False) -> tuple[list[Selection], list[Exerci
     if not quiet:
         print(
             f"schema/counts: ok ({profile}: {actual[0]} selection, "
-            f"{actual[1]} exercises, {actual[2]} published; emoji signatures unique)"
+            f"{actual[1]} exercises, {actual[2]} published)"
         )
     return chosen_selections, chosen_exercises
 

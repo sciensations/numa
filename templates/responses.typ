@@ -1,9 +1,9 @@
 #import "@preview/zebra:0.1.0": qrcode
+#import "../lib/logo.typ": numa-logo
 #import "../lib/model.typ": published-exercises
 #import "../lib/theme.typ": *
 
 #let base-url = "https://lcnbr.github.io/numa"
-#let _logo-path = "../assets/brand/numa-logo.png"
 
 #let exercise-url(item) = base-url + "/e/" + item.id + ".html"
 
@@ -22,7 +22,7 @@
   grid(
     columns: (35mm, 1fr),
     align: (left + horizon, right + horizon),
-    image(_logo-path, width: 32mm, alt: "Numa"),
+    numa-logo(width: 32mm),
     [
       #set text(size: 17pt, weight: "bold", fill: numa-blue-dark)
       Cherche, teste, explique !
@@ -53,12 +53,10 @@
     ),
     ..exercises.enumerate().map(((index, item)) => (
       table.cell(fill: accent-for(item.serial).lighten(72%))[
-        #box(height: 4mm, baseline: 3mm)[
-          #text(font: "Noto Color Emoji", size: 8.5pt)[#item.emojis.join(h(1mm))]
-        ]
-        #h(1.2mm)
-        #set text(size: 6.5pt, weight: "bold", fill: numa-blue-dark)
-        #upper(item.id)
+        #set text(weight: "bold", fill: numa-blue-dark)
+        #(index + 1)
+        #linebreak()
+        #text(size: 6.5pt, weight: "regular")[ID #upper(item.id)]
       ],
       [],
       [],

@@ -45,6 +45,7 @@ jobs:
       - name: Compile teacher print fixtures
         run: |
           python3 scripts/compile_print.py cards
+          python3 scripts/compile_print.py response s01
           python3 scripts/compile_print.py response s03
 
       - name: Check

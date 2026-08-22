@@ -67,7 +67,7 @@ def main() -> int:
         handle.write(draft(serial))
     write_registry()
     print(f"Created {rel(path)} with serial {serial} and draft status.")
-    print("Updated the generated registry; teacher/catalog.typ shows its ID and emoji.")
+    print("Updated the generated registry; teacher/catalog.typ shows its ID.")
     return 0
 
 

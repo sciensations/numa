@@ -1,15 +1,15 @@
 #import "../lib/model.typ": memberships
 #import "exercise-registry.typ": exercises
+#import "selections/s01.typ": item as s01
 #import "selections/s03.typ": item as s03
 
-#let selections = (s03,)
+#let selections = (s01, s03)
 
 // Queryable scalar metadata for repository tooling. Statements and other Typst
 // content remain in the canonical exercise records above.
 #let catalog-data = exercises.map(item => (
   serial: item.serial,
   id: item.id,
-  emojis: item.emojis,
   status: item.status,
   topics: item.topics,
   difficulty: item.difficulty,

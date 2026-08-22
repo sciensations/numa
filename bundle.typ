@@ -4,8 +4,8 @@
 
 #let build-profile = sys.inputs.at("profile", default: "pilot")
 #assert(build-profile in ("pilot", "full"), message: "profile must be pilot or full")
-#let expected-published = if build-profile == "full" { 77 } else { 6 }
-#let expected-selections = if build-profile == "full" { 13 } else { 1 }
+#let expected-published = if build-profile == "full" { 83 } else { 12 }
+#let expected-selections = if build-profile == "full" { 14 } else { 2 }
 #let catalog-stats = validate-catalog(
   exercises,
   selections,
@@ -14,10 +14,15 @@
 )
 
 #if build-profile == "pilot" {
+  let s01 = find-selection(selections, "s01")
   let s03 = find-selection(selections, "s03")
   let pilot-exercises = exercises.filter(item => item.status == "published")
+  assert(s01.exercises.len() == 6, message: "pilot requires six exercises in S01")
   assert(s03.exercises.len() == 6, message: "pilot requires six exercises in S03")
-  assert(pilot-exercises.map(it => it.id) == ("3009ac", "e09805", "9df8b0", "402f01", "25ecd7", "bb6cb4"),
+  assert(pilot-exercises.map(it => it.id) == (
+    "3009ac", "e09805", "9df8b0", "402f01", "25ecd7", "bb6cb4",
+    "d72deb", "b26606", "0e41af", "4b5936", "bf18c0", "765d0c",
+  ),
     message: "pilot exercise ID mapping changed")
 }
 
@@ -27,7 +32,6 @@
 #for path in (
   "assets/site.css",
   "assets/site.js",
-  "assets/brand/numa-logo.png",
   "assets/fonts/AtkinsonHyperlegibleNext-Regular.woff2",
   "assets/fonts/AtkinsonHyperlegibleNext-Bold.woff2",
   "assets/fonts/OFL.txt",
@@ -52,7 +56,6 @@
   extra: active-exercises.filter(it => has-content(it.extra)).len(),
   solutions: active-exercises.filter(it => has-content(it.solution)).len(),
   ids: active-exercises.map(it => it.id),
-  emoji_signatures: active-exercises.map(it => it.emojis),
 )
 #asset("content-status.json", bytes(json.encode(content-status, pretty: true)))
 

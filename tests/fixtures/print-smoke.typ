@@ -6,14 +6,7 @@
 
 #let source = selections.first()
 #let row-count = int(sys.inputs.at("rows", default: "6"))
-#let selected = if row-count <= 6 {
-  exercises.slice(0, row-count)
-} else {
-  exercises + (
-    exercises.at(0) + (id: "abc123", serial: 7),
-    exercises.at(1) + (id: "def456", serial: 8),
-  )
-}
+#let selected = exercises.slice(0, row-count)
 #let selection = source + (exercises: selected)
 
 #if sys.inputs.at("document", default: "cards") == "responses" {

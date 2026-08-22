@@ -36,9 +36,10 @@ print-cards:
 print-response selection="s03":
     "{{python}}" scripts/compile_print.py response "{{selection}}"
 
-# Build, then run all read-only checks. Use `just check full` for the 13-session target.
+# Build, then run all read-only checks. Use `just check full` for the 14-selection target.
 check profile=validation_profile:
     "{{python}}" scripts/build.py --profile "{{profile}}"
     "{{python}}" scripts/compile_print.py cards
+    "{{python}}" scripts/compile_print.py response s01
     "{{python}}" scripts/compile_print.py response s03
     "{{python}}" scripts/check.py --profile "{{profile}}"
