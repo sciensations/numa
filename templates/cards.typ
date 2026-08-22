@@ -1,11 +1,13 @@
 #import "../lib/model.typ": published-exercises, source-attribution
 #import "../lib/theme.typ": *
+#import "../lib/emoji.typ":star-score 
 
 #let _logo-path = "../assets/brand/numa-logo.png"
 #let _emoji-line(item, size: 11pt) = text(
   font: "Noto Color Emoji",
   size: size,
-)[#item.emojis.join(" ")]
+)[#item.emojis.join(h(1mm))]
+
 
 #let _front-body(item) = {
   let statement = item.statement_parts.first()
@@ -46,12 +48,6 @@
         #set text(size: 14pt, weight: "bold", fill: numa-blue-dark)
         #heading-text
       ],
-      align(right + horizon)[
-        #_emoji-line(item)
-        #linebreak()
-        #set text(size: 7pt, weight: "regular", fill: numa-muted)
-        ID #upper(item.id)
-      ],
     )
   ]
   let statement-block = block(width: 100%,inset:4mm)[
@@ -67,8 +63,6 @@
     #heading-block
     #v(2.8mm)
     #statement-block
-    #v(2.8mm)
-    #source-block
   ]
 
   layout(_ => {
@@ -89,7 +83,6 @@
         row-gutter: 2.8mm,
         heading-block,
         statement-block,
-        source-block,
       )
     ]
   })
@@ -111,17 +104,22 @@
       radius: 3mm,
       inset: 7mm,
     )[
+      #align(right,star-score(item.difficulty))
       #align(center + horizon)[
+        #v(2fr)
         #image(_logo-path, width: 52mm, alt: "Numa")
         #v(7mm)
         #set text(size: 13pt, weight: "bold", fill: numa-blue-dark)
-        Cherche, teste, explique !
-        #v(4mm)
+        #item.title
+        #v(2fr)
         #_emoji-line(item, size: 14pt)
-        #v(2mm)
+       #v(1fr)
+        
         #set text(size: 8pt, weight: "regular", fill: numa-muted)
         ID #upper(item.id)
+         #v(2fr)
       ]
+      #text(size: 2.3mm,align(left,emph(source-attribution(item.source))))
     ]
   ]
 }

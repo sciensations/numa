@@ -54,7 +54,7 @@
     ..exercises.enumerate().map(((index, item)) => (
       table.cell(fill: accent-for(item.serial).lighten(72%))[
         #box(height: 4mm, baseline: 3mm)[
-          #text(font: "Noto Color Emoji", size: 8.5pt)[#item.emojis.join(" ")]
+          #text(font: "Noto Color Emoji", size: 8.5pt)[#item.emojis.join(h(1mm))]
         ]
         #h(1.2mm)
         #set text(size: 6.5pt, weight: "bold", fill: numa-blue-dark)

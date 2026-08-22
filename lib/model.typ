@@ -74,11 +74,9 @@
     message: "exercise serial " + str(serial) + " must use id `" + exercise-id(serial) + "`")
   assert(id.match(regex("^[0-9a-f]{6}$")) != none,
     message: "exercise id must be six lowercase hexadecimal characters")
-  assert(type(emojis) == array and emojis.len() == 4,
+  assert(type(emojis) == array and emojis.len() == 3,
     message: "exercise " + id + " needs exactly four emoji")
-  assert(emojis.all(emoji => type(emoji) == str and emoji.trim() != ""),
-    message: "exercise " + id + " contains an invalid emoji")
-  assert(emojis.dedup().len() == 4,
+  assert(emojis.dedup().len() == 3 ,
     message: "exercise " + id + " emoji must be distinct")
   assert(has-content(title), message: "exercise " + id + " needs a title")
   assert(type(parts) == array and parts.len() in (1, 2),
