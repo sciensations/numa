@@ -2,6 +2,10 @@
 #import "../lib/theme.typ": *
 
 #let _logo-path = "../assets/brand/numa-logo.png"
+#let _emoji-line(item, size: 11pt) = text(
+  font: "Noto Color Emoji",
+  size: size,
+)[#item.emojis.join(" ")]
 
 #let _front-body(item) = {
   let statement = item.statement_parts.first()
@@ -43,6 +47,8 @@
         #heading-text
       ],
       align(right + horizon)[
+        #_emoji-line(item)
+        #linebreak()
         #set text(size: 7pt, weight: "regular", fill: numa-muted)
         ID #upper(item.id)
       ],
@@ -111,6 +117,8 @@
         #set text(size: 13pt, weight: "bold", fill: numa-blue-dark)
         Cherche, teste, explique !
         #v(4mm)
+        #_emoji-line(item, size: 14pt)
+        #v(2mm)
         #set text(size: 8pt, weight: "regular", fill: numa-muted)
         ID #upper(item.id)
       ]

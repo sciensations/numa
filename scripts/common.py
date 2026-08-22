@@ -54,6 +54,7 @@ class Exercise:
     path: Path
     serial: int
     id: str
+    emojis: tuple[str, ...]
     status: str
     topics: tuple[str, ...]
     difficulty: float
@@ -65,6 +66,7 @@ class Exercise:
 class Selection:
     path: Path
     id: str
+    serials: tuple[int, ...]
     text: str
 
 
@@ -152,6 +154,7 @@ def load_exercises() -> list[Exercise]:
                 path=path,
                 serial=serial,
                 id=str(item["id"]),
+                emojis=tuple(str(value) for value in item["emojis"]),
                 status=status,
                 topics=tuple(str(value) for value in item["topics"]),
                 difficulty=float(item["difficulty"]),
@@ -175,7 +178,11 @@ def load_selections() -> list[Selection]:
         identifier = extract_string(text, "id")
         if identifier is None:
             raise CheckError(f"{rel(path)}: cannot parse selection id")
-        selections.append(Selection(path=path, id=identifier, text=text))
+        serials_match = re.search(r"#let\s+serials\s*=\s*\(([^)]*)\)", text)
+        if serials_match is None:
+            raise CheckError(f"{rel(path)}: cannot parse serials tuple")
+        serials = tuple(int(value) for value in re.findall(r"\d+", serials_match.group(1)))
+        selections.append(Selection(path=path, id=identifier, serials=serials, text=text))
     return selections
 
 

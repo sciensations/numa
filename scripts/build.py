@@ -11,6 +11,7 @@ import tempfile
 from pathlib import Path
 
 from common import BUNDLE, DIST, ROOT, CheckError, fail, require_typst_version
+from generate_registry import check_registry
 
 
 def parse_args() -> argparse.Namespace:
@@ -49,6 +50,7 @@ def main() -> int:
     args = parse_args()
     if not BUNDLE.is_file():
         raise CheckError("bundle.typ is missing")
+    check_registry()
 
     typst = require_typst_version()
     staging = Path(tempfile.mkdtemp(prefix=".numa-dist-", dir=ROOT)).resolve()

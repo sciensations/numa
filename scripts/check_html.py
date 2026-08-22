@@ -202,6 +202,7 @@ def run(profile: str = "pilot", dist: Path = DIST, site_url: str = SITE_URL) -> 
             'name="selection"',
             'src="assets/site.js"',
             'data-difficulty=',
+            'data-emojis=',
             'data-selections=',
         )
         for hook in required_catalog_hooks:
@@ -209,6 +210,13 @@ def run(profile: str = "pilot", dist: Path = DIST, site_url: str = SITE_URL) -> 
                 errors.append(f"dist/index.html: missing catalog hook {hook!r}")
         if not (dist / "assets" / "site.js").is_file():
             errors.append("dist/assets/site.js: missing catalog interaction script")
+        for exercise in published:
+            signature = " ".join(exercise.emojis)
+            page = dist / "e" / f"{exercise.id}.html"
+            if signature not in index_source:
+                errors.append(f"dist/index.html: missing emoji signature {signature}")
+            if page.is_file() and signature not in page.read_text(encoding="utf-8"):
+                errors.append(f"{rel(page)}: missing emoji signature {signature}")
         details = sum(
             parsed[path].tag_counts["details"]
             for path in actual_exercise_pages

@@ -1,13 +1,7 @@
 #import "../lib/model.typ": memberships
-#import "exercises/0001.typ": item as ex01
-#import "exercises/0002.typ": item as ex02
-#import "exercises/0003.typ": item as ex03
-#import "exercises/0004.typ": item as ex04
-#import "exercises/0005.typ": item as ex05
-#import "exercises/0006.typ": item as ex06
+#import "exercise-registry.typ": exercises
 #import "selections/s03.typ": item as s03
 
-#let exercises = (ex01, ex02, ex03, ex04, ex05, ex06)
 #let selections = (s03,)
 
 // Queryable scalar metadata for repository tooling. Statements and other Typst
@@ -15,6 +9,7 @@
 #let catalog-data = exercises.map(item => (
   serial: item.serial,
   id: item.id,
+  emojis: item.emojis,
   status: item.status,
   topics: item.topics,
   difficulty: item.difficulty,

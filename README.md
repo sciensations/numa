@@ -6,13 +6,13 @@ The S03 pilot contains six exercises. The public site is generated entirely by T
 
 ## Published identifiers
 
-Each exercise has a permanent six-character hexadecimal identifier derived from its append-only serial number with the pinned Typst package `@preview/suiji:0.5.1`. The title, topic, difficulty, and selection membership may change without changing the URL:
+Each exercise has a permanent six-character hexadecimal identifier derived from its append-only serial number with the pinned Typst package `@preview/suiji:0.5.1`. It also gets a deterministic random signature of four distinct symbols from the curated library in `lib/emoji.typ`. The title, topic, difficulty, and selection membership may change without changing either marker:
 
 ```text
 https://lcnbr.github.io/numa/e/3009ac.html
 ```
 
-Never change a published serial or reuse one. The short identifier is checked against a golden list, because printed QR codes cannot be recalled.
+Never change a published serial or reuse one. The short identifier is checked against a golden list, and the complete catalog rejects duplicate four-emoji signatures. The emoji library order and seed convention are therefore permanent print data too.
 
 ## Requirements
 
@@ -21,7 +21,7 @@ Never change a published serial or reuse one. The short identifier is checked ag
 - Python 3.10 or newer;
 - the pinned QA packages in `scripts/requirements-qa.txt`.
 
-The project pins Typst because its HTML bundle export is experimental. Builds ignore system fonts and use the committed Atkinson Hyperlegible Next files plus Typst's embedded fonts. `just setup` downloads the exact Typst binary into the ignored `.tools/` directory when needed.
+The project pins Typst because its HTML bundle export is experimental. Builds ignore system fonts and use the committed Atkinson Hyperlegible Next and Noto Color Emoji files plus Typst's embedded fonts. `just setup` downloads the exact Typst binary into the ignored `.tools/` directory when needed.
 
 ## Teacher workflow
 
@@ -36,6 +36,7 @@ The useful local commands are:
 
 ```sh
 just new-exercise 7
+just registry
 just preview
 just build
 just print-cards
@@ -49,7 +50,9 @@ Generated website files go to the ignored `dist/` directory. Teacher PDFs go to 
 
 ## Adding an exercise
 
-`just new-exercise <serial>` creates `content/exercises/<serial-padded-to-four-digits>.typ` as a draft and refuses to overwrite an existing file. Register the import in `content/catalog.typ` when it is ready to participate in validation.
+`just new-exercise <serial>` creates `content/exercises/<serial-padded-to-four-digits>.typ` as a draft, refuses to overwrite an existing file, and regenerates `content/exercise-registry.typ`. No manual catalog import is needed.
+
+Typst requires static imports, so `content/exercise-registry.typ` is generated from the numbered files and committed. Run `just registry` after adding or removing a file by hand. Builds and CI reject a stale registry. Selections and teacher card batches refer to serials through `exercise-at`, for example `(1, 4, 9).map(exercise-at)`.
 
 An exercise record looks like this:
 
@@ -85,17 +88,18 @@ Figures use repository-relative paths under `assets/` and require meaningful alt
 
 A selection under `content/selections/` stores a label, optional year/term metadata, and an ordered tuple of exercise records. It does not affect exercise identity or the default catalog order. The same exercise may belong to several selections.
 
-To make an ad hoc card deck, change only the tuple in `teacher/cards.typ`. To preserve a response sheet for later reuse, add a named selection and a small entrypoint under `teacher/responses/`.
+To make an ad hoc card deck, change only the serial tuple in `teacher/cards.typ`. To preserve a response sheet for later reuse, add a named selection with a `serials` tuple and a small entrypoint under `teacher/responses/`.
 
 Cards are A6 landscape cells imposed four-up on A4 landscape. Front sheets are followed by horizontally mirrored backs for short-edge duplex printing. Print at 100%, test one duplex sheet, cut on the center marks, and laminate.
 
-The response sheet is one-sided A4 portrait. Its QR codes point directly to the independent exercise pages; the visible fallback URL carries the same permanent identifier.
+The response sheet is one-sided A4 portrait. Its QR codes point directly to the independent exercise pages, while the printed hexadecimal and emoji markers help identify each row.
 
 ## Validation
 
 `just check` rebuilds the pilot site and both teacher PDFs, then verifies:
 
-- neutral exercise schema, structured sources, controlled topics, difficulty bounds, selections, and golden identifiers;
+- neutral exercise schema, structured sources, controlled topics, difficulty bounds, selections, golden identifiers, four distinct emoji per exercise, and catalog-wide signature uniqueness;
+- an exact generated-registry check, so adding a file never requires hand-maintained import aliases;
 - generated HTML links, assets, metadata, filtering hooks, and native disclosure semantics;
 - A4 page dimensions, four card-imposition pages, and the single response page;
 - every QR payload decoded at print resolution and every printed fallback URL;

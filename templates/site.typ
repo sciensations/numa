@@ -41,6 +41,14 @@
 
 #let _difficulty-label(value) = str(value).replace(".", ",") + " / 5"
 
+#let _emoji-signature(item, class: "emoji-signature") = html.elem(
+  "span",
+  attrs: (
+    class: class,
+    "aria-label": "Repère emoji : " + item.emojis.join(", "),
+  ),
+)[#item.emojis.join(" ")]
+
 #let _option(value, label, selected: false) = {
   let attrs = (value: value)
   if selected { attrs.insert("selected", "") }
@@ -136,12 +144,14 @@
           html.elem("li", attrs: (
             class: "catalog-card",
             "data-id": item.id,
+            "data-emojis": item.emojis.join(" "),
             "data-topics": item.topics.join(" "),
             "data-difficulty": str(item.difficulty),
             "data-source": item.source.organization,
             "data-selections": used-in.map(it => it.id).join(" "),
           ))[
             #_a("e/" + item.id + ".html", [
+              #_emoji-signature(item)
               #html.elem("span", attrs: (class: "catalog-card__id"))[ID #upper(item.id)]
               #html.elem("strong", attrs: (class: "catalog-card__title"))[#item.title]
               #html.elem("span", attrs: (class: "catalog-card__meta"))[
@@ -185,6 +195,7 @@
     ]
     #html.elem("article", attrs: (class: "exercise-page"))[
       #html.elem("header", attrs: (class: "page-heading"))[
+        #_emoji-signature(item, class: "emoji-signature emoji-signature--large")
         #html.elem("p", attrs: (class: "eyebrow"))[ID #upper(item.id)]
         #html.elem("h1")[#item.title]
         #html.elem("div", attrs: (class: "metadata-row"))[

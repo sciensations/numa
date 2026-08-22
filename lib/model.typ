@@ -1,4 +1,5 @@
 #import "id.typ": exercise-id
+#import "emoji.typ": emoji-signature
 
 #let topic-registry = (
   "arithmetique": "Arithmétique",
@@ -55,6 +56,7 @@
   assert(type(item) == dictionary, message: "exercise must be a dictionary")
   let id = _required(item, "id", "exercise")
   let serial = _required(item, "serial", "exercise " + str(id))
+  let emojis = _required(item, "emojis", "exercise " + str(id))
   let title = _required(item, "title", "exercise " + str(id))
   let parts = _required(item, "statement_parts", "exercise " + str(id))
   let topics = _required(item, "topics", "exercise " + str(id))
@@ -72,6 +74,12 @@
     message: "exercise serial " + str(serial) + " must use id `" + exercise-id(serial) + "`")
   assert(id.match(regex("^[0-9a-f]{6}$")) != none,
     message: "exercise id must be six lowercase hexadecimal characters")
+  assert(type(emojis) == array and emojis.len() == 4,
+    message: "exercise " + id + " needs exactly four emoji")
+  assert(emojis.all(emoji => type(emoji) == str and emoji.trim() != ""),
+    message: "exercise " + id + " contains an invalid emoji")
+  assert(emojis.dedup().len() == 4,
+    message: "exercise " + id + " emoji must be distinct")
   assert(has-content(title), message: "exercise " + id + " needs a title")
   assert(type(parts) == array and parts.len() in (1, 2),
     message: "exercise " + id + " needs one or two statement parts")
@@ -120,6 +128,7 @@
 ) = validate-exercise((
   id: exercise-id(serial),
   serial: serial,
+  emojis: emoji-signature(serial),
   title: title,
   statement_parts: statement_parts,
   topics: topics,
@@ -171,13 +180,18 @@
   assert(type(selections) == array, message: "catalogue selections must be an array")
   let serials = ()
   let ids = ()
+  let emoji-signatures = ()
   let published = 0
   for item in exercises {
     let _validated = validate-exercise(item)
     assert(not serials.contains(item.serial), message: "duplicate exercise serial " + str(item.serial))
     assert(not ids.contains(item.id), message: "duplicate exercise id `" + item.id + "`")
+    let emoji-key = item.emojis.join("|")
+    assert(not emoji-signatures.contains(emoji-key),
+      message: "emoji signature collision for exercise " + item.id + ": " + item.emojis.join(" "))
     serials.push(item.serial)
     ids.push(item.id)
+    emoji-signatures.push(emoji-key)
     if item.status == "published" { published += 1 }
   }
   assert(serials == serials.sorted(), message: "exercises must be ordered by serial")

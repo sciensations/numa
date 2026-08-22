@@ -36,6 +36,9 @@ jobs:
       - name: Install QR validation dependencies
         run: python3 -m pip install --disable-pip-version-check --requirement scripts/requirements-qa.txt
 
+      - name: Check generated exercise registry
+        run: python3 scripts/generate_registry.py --check
+
       - name: Build
         run: python3 scripts/build.py
 

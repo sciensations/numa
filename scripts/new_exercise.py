@@ -6,7 +6,8 @@ from __future__ import annotations
 import argparse
 import os
 
-from common import CONTENT, ROOT, CheckError, fail, load_exercises, rel
+from common import CONTENT, ROOT, CheckError, fail, rel
+from generate_registry import write_registry
 
 
 def parse_args() -> argparse.Namespace:
@@ -47,12 +48,13 @@ def draft(serial: int) -> str:
 
 def main() -> int:
     args = parse_args()
-    existing = load_exercises()
-    next_serial = max((item.serial for item in existing), default=0) + 1
+    existing = sorted((CONTENT / "exercises").glob("[0-9][0-9][0-9][0-9].typ"))
+    existing_serials = {int(path.stem) for path in existing}
+    next_serial = max(existing_serials, default=0) + 1
     serial = args.serial or next_serial
     if serial < 1:
         raise CheckError("serial must be positive")
-    if any(item.serial == serial for item in existing):
+    if serial in existing_serials:
         raise CheckError(f"serial {serial} already exists")
     path = CONTENT / "exercises" / f"{serial:04d}.typ"
     if ROOT not in path.resolve().parents:
@@ -63,8 +65,9 @@ def main() -> int:
         raise CheckError(f"refusing to overwrite {rel(path)}") from exc
     with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
         handle.write(draft(serial))
+    write_registry()
     print(f"Created {rel(path)} with serial {serial} and draft status.")
-    print("Import it in content/catalog.typ; teacher/catalog.typ shows its derived ID.")
+    print("Updated the generated registry; teacher/catalog.typ shows its ID and emoji.")
     return 0
 
 

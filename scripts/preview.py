@@ -10,6 +10,7 @@ import os
 import subprocess
 
 from common import BUNDLE, DIST, ROOT, CheckError, fail, require_typst_version
+from generate_registry import check_registry
 
 
 def parse_args() -> argparse.Namespace:
@@ -28,6 +29,7 @@ def main() -> int:
         raise CheckError("port must be between 1 and 65535")
     if not BUNDLE.is_file():
         raise CheckError("bundle.typ is missing")
+    check_registry()
     DIST.mkdir(parents=True, exist_ok=True)
 
     typst = require_typst_version()

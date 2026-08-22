@@ -14,12 +14,18 @@ setup:
 new-exercise serial="":
     "{{python}}" scripts/new_exercise.py "{{serial}}"
 
+# Regenerate the static Typst registry from content/exercises/*.typ.
+registry:
+    "{{python}}" scripts/generate_registry.py
+
 # Watch the Typst bundle and serve dist/ locally.
 preview host="127.0.0.1" port="8000":
+    "{{python}}" scripts/generate_registry.py
     "{{python}}" scripts/preview.py --host "{{host}}" --port "{{port}}"
 
 # Build the complete Typst HTML/PDF bundle into dist/.
 build:
+    "{{python}}" scripts/generate_registry.py
     "{{python}}" scripts/build.py
 
 # Compile the current teacher card batch.

@@ -11,6 +11,7 @@ from check_placeholders import run as check_placeholders
 from check_qr import run as check_qr
 from check_smoke import run as check_smoke
 from common import CheckError, fail
+from generate_registry import check_registry
 from schema_counts import run as check_schema
 
 
@@ -22,6 +23,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    check_registry()
     check_schema(args.profile)
     check_html(args.profile)
     check_pdfs(args.profile)

@@ -15,8 +15,9 @@
 
 #if build-profile == "pilot" {
   let s03 = find-selection(selections, "s03")
+  let pilot-exercises = exercises.filter(item => item.status == "published")
   assert(s03.exercises.len() == 6, message: "pilot requires six exercises in S03")
-  assert(exercises.map(it => it.id) == ("3009ac", "e09805", "9df8b0", "402f01", "25ecd7", "bb6cb4"),
+  assert(pilot-exercises.map(it => it.id) == ("3009ac", "e09805", "9df8b0", "402f01", "25ecd7", "bb6cb4"),
     message: "pilot exercise ID mapping changed")
 }
 
@@ -51,6 +52,7 @@
   extra: active-exercises.filter(it => has-content(it.extra)).len(),
   solutions: active-exercises.filter(it => has-content(it.solution)).len(),
   ids: active-exercises.map(it => it.id),
+  emoji_signatures: active-exercises.map(it => it.emojis),
 )
 #asset("content-status.json", bytes(json.encode(content-status, pretty: true)))
 

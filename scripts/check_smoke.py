@@ -35,12 +35,37 @@ def compile_fixture(typst: str, source: Path, output: Path, *options: str) -> No
         raise CheckError(f"Typst smoke compile failed for {source.name}: {detail}")
 
 
+def expect_compile_failure(
+    typst: str, source: Path, output: Path, expected: str
+) -> None:
+    command = [
+        typst,
+        "compile",
+        "--font-path",
+        str(ROOT / "assets" / "fonts"),
+        "--ignore-system-fonts",
+        "--root",
+        str(ROOT),
+        str(source),
+        str(output),
+    ]
+    result = subprocess.run(
+        command, cwd=ROOT, check=False, capture_output=True, text=True
+    )
+    diagnostic = result.stderr or result.stdout
+    if result.returncode == 0 or expected not in diagnostic:
+        raise CheckError(
+            f"{source.name}: expected compile failure containing {expected!r}"
+        )
+
+
 def run() -> None:
     typst = require_typst_version()
     fixtures = ROOT / "tests" / "fixtures"
     site_source = fixtures / "site-smoke.typ"
     print_source = fixtures / "print-smoke.typ"
-    for source in (site_source, print_source):
+    collision_source = fixtures / "emoji-collision.typ"
+    for source in (site_source, print_source, collision_source):
         if not source.is_file():
             raise CheckError(f"missing smoke fixture: {source.relative_to(ROOT)}")
 
@@ -90,8 +115,16 @@ def run() -> None:
                     f"found {len(sizes)} page(s): {found}"
                 )
 
+        expect_compile_failure(
+            typst,
+            collision_source,
+            output / "emoji-collision.pdf",
+            "emoji signature collision",
+        )
+
     print(
-        "Typst smoke fixtures: ok (3 disclosures; response rows 4 and 8 on one A4 page)"
+        "Typst smoke fixtures: ok (emoji collision rejected; 3 disclosures; "
+        "response rows 4 and 8 on one A4 page)"
     )
 
 
