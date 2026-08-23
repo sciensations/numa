@@ -18,10 +18,24 @@
 
 #let accent-for(order) = numa-colors.at(calc.rem(order - 1, numa-colors.len()))
 
-#let print-fonts = "Atkinson Hyperlegible Next"
+#let print-fonts = ((
+      name: "Inter",
+      covers: regex("[0-9]"),
+    ),(name:"Atkinson Hyperlegible Next"),)
 
 #let apply-print-theme(body) = {
   set text(font: print-fonts, lang: "fr", fill: numa-ink)
   set par(justify: false, leading: 0.68em)
   body
 }
+
+#rect(fill: numa-blue) numa-blue
+#rect(fill: numa-blue-dark)numa-blue-dark
+#rect(fill: numa-green) numa-green
+#rect(fill: numa-blue)
+#rect(fill: numa-blue)
+#rect(fill: numa-blue)
+#rect(fill: numa-blue)
+#rect(fill: numa-blue)
+#rect(fill: numa-blue)
+#rect(fill: numa-blue)

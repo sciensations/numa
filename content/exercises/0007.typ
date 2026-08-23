@@ -8,15 +8,25 @@
   statement_parts: (
     [
       Dans un dé « normal », la somme des points situés sur deux faces opposées est toujours égale à 7.
+     #let cell = grid.cell.with(
+    fill: luma(235),
+    stroke: 0.5pt + black,
+    inset: 0pt,
+    align: center + horizon,
+  )
+  #let size=9mm 
+#align(center,grid(
+    columns: (size,)*4,
+    rows: (size,) * 3,
+    gutter: 0pt,
 
+    cell(x: 0, y: 1)[2],cell(x: 1, y: 1)[3],cell(x: 1, y: 0)[1],cell(x: 2, y: 1)[],cell(x: 3, y: 1)[],cell(x: 2, y: 2)[]))
       Complète les faces du patron de ce dé normal.
-    ],
+
+  
+  ],
   ),
-  figure: (
-    path: "assets/exercises/s01/die-net.png",
-    alt: "Patron de dé formé de six carrés : quatre carrés alignés, portant 2 puis 3 sur les deux premiers, un carré portant 1 au-dessus du deuxième, et un carré vide sous le troisième.",
-    caption: none,
-  ),
+  
   source: (
     organization: "FSJM",
     competition: "Quarts de finale",

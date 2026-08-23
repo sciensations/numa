@@ -10,6 +10,9 @@
       Un troupeau est composé de chameaux et de dromadaires (au moins un animal de chaque espèce). Au total, on compte 29 bosses. Un chameau a deux bosses, un dromadaire une seule.
 
       Combien le troupeau compte-t-il de bêtes, au minimum ?
+      #v(1fr)
+      #align(center,image("../../assets/exercises/s01/dromadaire.png"))
+      #v(1fr)
     ],
   ),
   figure: none,

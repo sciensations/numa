@@ -2,7 +2,7 @@
 
 #let item = exercise(
   serial: 6,
-  title: [Défi — Plus ou moins un],
+  title: [Défi - Plus ou moins un],
   topics: ("combinatoire", "logique-strategie", "optimisation"),
   difficulty: 4.5,
   statement_parts: (

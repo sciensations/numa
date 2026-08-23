@@ -11,13 +11,11 @@
 
       Quel sera ce résultat ?
 
+      #v(1fr)
+      #align(center,image("../../assets/exercises/s01/tokens.png",width: 5cm))
+      #v(1fr)
       _Note : le « 6 » retourné peut se transformer en « 9 »._
     ],
-  ),
-  figure: (
-    path: "assets/exercises/s01/tokens.png",
-    alt: "Cinq jetons posés sur une règle et portant respectivement 3, 4, 5, 6 et le signe de multiplication.",
-    caption: none,
   ),
   source: (
     organization: "FSJM",

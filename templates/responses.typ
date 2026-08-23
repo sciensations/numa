@@ -7,10 +7,23 @@
 
 #let exercise-url(item) = base-url + "/e/" + item.id + ".html"
 
+#let exercise-qrid(item)={
+  grid(
+    align: center,
+    
+  qrcode(
+          exercise-url(item),
+          width: 20mm,
+          quiet-zone: true,
+          background-fill: none,
+        ),
+        [ #set text(size: 8pt, weight: "regular", fill: numa-muted)
+        ID #upper(item.id)])
+}
+
 #let responses-document(selection) = {
   let exercises = published-exercises(selection.exercises)
   let count = exercises.len()
-  let qr-size = if count <= 6 { 25mm } else { 21mm }
   assert(count >= 4 and count <= 8,
     message: "response sheets support four to eight exercises; " + selection.id
       + " has " + str(count))

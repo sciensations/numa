@@ -1,6 +1,19 @@
+#import "@preview/zebra:0.1.0": qrcode
 #import "../lib/model.typ": published-exercises, source-attribution
 #import "../lib/logo.typ": numa-logo
 #import "../lib/theme.typ": *
+#import "responses.typ": exercise-qrid
+#let star-score(a)={
+  
+  let stars = () 
+  while stars.len() < a {
+    stars.push(text(size:7mm,emoji.star))
+  }
+  stars.join(h(1mm))
+}
+
+
+
 
 
 #let _front-body(item) = {
@@ -13,7 +26,7 @@
       gutter: 4mm,
       statement,
       align(center + horizon)[
-        #image(
+         #image(
           "../" + item.figure.path,
           width: 100%,
           height: 49mm,
@@ -69,7 +82,7 @@
       height: 105mm,
       inset: 6mm,
       stroke: 0.3pt + numa-muted.lighten(35%),
-      fill: numa-paper,
+      fill: none,
     )[
       #grid(
         columns: (1fr,),
@@ -89,7 +102,7 @@
     height: 105mm,
     inset: 6mm,
     stroke: 0.3pt + numa-muted.lighten(35%),
-    fill: numa-paper,
+    fill: none,
   )[
     #block(
       width: 100%,
@@ -98,18 +111,26 @@
       radius: 3mm,
       inset: 7mm,
     )[
+      // #grid(
+     //    columns: (1fr,1fr),align: (left+top,right+top),
+      
+     // star-score(item.difficulty),exercise-qrid(item))
+      #align(right,star-score(item.difficulty))
       #align(center + horizon)[
-        #v(2fr)
+        #v(3fr)
         #numa-logo(width: 52mm)
-        #v(7mm)
+        #v(2fr)
         #set text(size: 13pt, weight: "bold", fill: numa-blue-dark)
         #item.title
-        #v(1fr)
-        #set text(size: 8pt, weight: "regular", fill: numa-muted)
-        ID #upper(item.id)
+        
+        
+        
         #v(2fr)
       ]
-      #text(size: 2.3mm,align(left,emph(source-attribution(item.source))))
+      #grid(
+        columns: (1fr,30mm),align: (left+bottom,right),
+      
+      text(size: 2.3mm,emph(source-attribution(item.source))),exercise-qrid(item))
     ]
   ]
 }
