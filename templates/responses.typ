@@ -3,7 +3,7 @@
 #import "../lib/model.typ": published-exercises
 #import "../lib/theme.typ": *
 
-#let base-url = "https://lcnbr.github.io/numa"
+#let base-url = "https://sciensations.github.io/numa"
 
 #let exercise-url(item) = base-url + "/e/" + item.id + ".html"
 
@@ -38,7 +38,7 @@
     numa-logo(width: 32mm),
     [
       #set text(size: 17pt, weight: "bold", fill: numa-blue-dark)
-      Cherche, teste, explique !
+      Feuille de réponses
       #linebreak()
       #set text(size: 9pt, weight: "regular", fill: numa-muted)
       #upper(selection.id) · #selection.title · #selection.date
@@ -50,36 +50,31 @@
     columns: (1fr, 1fr),
     gutter: 12mm,
     [*Prénom et nom :* #box(width: 1fr, baseline: 1pt, line(length: 100%, stroke: 0.5pt))],
-    [*Date :* #box(width: 1fr, baseline: 1pt, line(length: 100%, stroke: 0.5pt))],
+    //[*Date :* #box(width: 1fr, baseline: 1pt, line(length: 100%, stroke: 0.5pt))],
   )
   v(3mm)
 
   set table(stroke: 0.45pt + numa-muted.lighten(30%), inset: 2mm)
   table(
-    columns: (1fr, 2fr, 1fr, 1fr),
+    columns: (1fr, 2fr, 1fr),
     align: (center + horizon, left + top, center + horizon, center + horizon),
     table.header(
-      table.cell(fill: numa-blue.lighten(65%))[*N°*],
+      table.cell(fill: numa-blue.lighten(65%))[*Problème*],
       table.cell(fill: numa-blue.lighten(65%))[*Réponse et explication*],
       table.cell(fill: numa-blue.lighten(65%))[*Validation*],
-      table.cell(fill: numa-blue.lighten(65%))[*QR*],
     ),
     ..exercises.enumerate().map(((index, item)) => (
-      table.cell(fill: accent-for(item.serial).lighten(72%))[
+      hide(table.cell[
+        #v(2mm)
         #set text(weight: "bold", fill: numa-blue-dark)
-        #(index + 1)
-        #linebreak()
-        #text(size: 6.5pt, weight: "regular")[ID #upper(item.id)]
-      ],
-      [],
+        #item.title
+        #v(-3mm)
+        #exercise-qrid(item)
+      ]),
+      
       [],
       [
-        #qrcode(
-          exercise-url(item),
-          width: qr-size,
-          quiet-zone: true,
-          background-fill: white,
-        )
+        
       ],
       // [
       //   #set text(size: 5.5pt, fill: numa-muted)
@@ -98,9 +93,20 @@
     Scanne le code après la séance pour retrouver l’énoncé et les compléments.
   ]
 
-  context {
-    let pages = counter(page).final().first()
-    assert(pages == 1,
-      message: "response sheet for " + selection.id + " overflowed to " + str(pages) + " pages")
-  }
+  
+
+  pagebreak()
+
+  table(
+    columns: (1fr,1fr,1fr,1fr),
+    align: center,
+    ..((exercises).map(item=>{(table.cell(breakable: false)[
+    
+        #set text(weight: "bold", fill: numa-blue-dark)
+        #item.title
+        #v(-3mm)
+        #exercise-qrid(item)
+      ],)*12}).flatten())
+  )
+  
 }

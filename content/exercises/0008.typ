@@ -11,7 +11,7 @@
 
       Combien le troupeau compte-t-il de bêtes, au minimum ?
       #v(1fr)
-      #align(center,image("../../assets/exercises/s01/dromadaire.png"))
+      #align(center,image("../../assets/exercises/s01/dromadaire.png", width: 40%))
       #v(1fr)
     ],
   ),

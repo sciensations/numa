@@ -44,7 +44,7 @@
   let statement = if continuation { item.statement_parts.at(1) } else { _front-body(item) }
   let heading-block = block(
     width: 100%,
-    fill: accent.lighten(58%),
+    fill: accent.lighten(70%),
     inset: 4mm,
     radius: 2.5mm,
   )[
@@ -107,7 +107,7 @@
     #block(
       width: 100%,
       height: 100%,
-      fill: accent.lighten(68%),
+      fill: accent.lighten(74%),
       radius: 3mm,
       inset: 7mm,
     )[
