@@ -2,6 +2,8 @@
 // They preserve native, editable Typst content in print while avoiding paged
 // layout constructs that the experimental HTML exporter currently drops.
 
+#import "theme.typ": print-fonts
+
 #let _html-target() = target() in ("html", "bundle")
 
 #let _checked-alt(alt) = {
@@ -42,16 +44,20 @@
 // to the visual itself so the surrounding exercise remains semantic HTML.
 #let exercise-diagram(body, alt: none) = context {
   let description = _checked-alt(alt)
+  let drawing = {
+    set text(font: print-fonts, lang: "fr")
+    body
+  }
   if _html-target() {
     html.elem("figure", attrs: (class: "exercise-visual exercise-visual--diagram"))[
       #html.elem("div", attrs: (
         class: "exercise-diagram__frame",
         role: "img",
         aria-label: description,
-      ))[#html.frame(body)]
+      ))[#html.frame(drawing)]
     ]
   } else {
-    align(center, body)
+    align(center, drawing)
   }
 }
 

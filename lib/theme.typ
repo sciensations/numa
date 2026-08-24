@@ -8,6 +8,7 @@
 #let numa-ink = rgb("#17313E")
 #let numa-paper = rgb("#F7FAF8")
 #let numa-muted = rgb("#607680")
+#let numa-font = "Atkinson Hyperlegible Next"
 
 #let numa-colors = (
   numa-blue,
@@ -18,10 +19,7 @@
 
 #let accent-for(order) = numa-colors.at(calc.rem(order - 1, numa-colors.len()))
 
-#let print-fonts = ((
-      name: "Inter",
-      covers: regex("[0-9]"),
-    ),(name:"Atkinson Hyperlegible Next"),)
+#let print-fonts = (numa-font,)
 
 #let apply-print-theme(body) = {
   set text(font: print-fonts, lang: "fr", fill: numa-ink)

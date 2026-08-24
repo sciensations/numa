@@ -2,7 +2,7 @@
 // is assembled from closed, filled CeTZ surfaces with a literal 0 mm stroke.
 
 #import "@preview/cetz:0.5.2"
-#import "theme.typ": numa-blue, numa-blue-dark, numa-green-light, numa-teal
+#import "theme.typ": numa-blue, numa-blue-dark, numa-font, numa-green-light, numa-teal
 
 #let _mark-width = 74.2
 #let _mark-height = 23.4
@@ -202,12 +202,12 @@
     if subtitle {
       content(
         (0, 2.2),
-        [#std.scale(x: 100%, origin: left, reflow: true)[
+        [#std.scale(x: 90%, origin: left, reflow: true)[
           #text(
-            font: "HK Grotesk",
-            size: width * 0.083,
+            font: numa-font,
+            size: width * 0.084,
             weight: "bold",
-            // tracking: 0.035em,
+            tracking: 0.035em,
             fill: _subtitle,
           )[Club de Maths - Neuchâtel]
         ]],
