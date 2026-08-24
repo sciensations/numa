@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://lcnbr.github.io/numa/sitemap.xml
+Sitemap: https://sciensations.github.io/numa/sitemap.xml

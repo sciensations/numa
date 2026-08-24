@@ -55,7 +55,7 @@ def run(profile: str, output: Path = OUTPUT) -> None:
         card_pages = 2 * ((published_count + 3) // 4)
         files.append((output / "card-batch.pdf", card_pages, A4_LANDSCAPE))
     for selection in selections:
-        files.append((output / f"{selection.id}-responses.pdf", 1, A4_PORTRAIT))
+        files.append((output / f"{selection.id}-responses.pdf", 2, A4_PORTRAIT))
 
     errors: list[str] = []
     checked_pages = 0

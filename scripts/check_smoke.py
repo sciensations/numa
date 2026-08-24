@@ -81,18 +81,20 @@ def run() -> None:
                 f"rows={rows}",
             )
             sizes = page_sizes(pdf)
-            if len(sizes) != 1 or not close_size(sizes[0], A4_PORTRAIT):
+            if len(sizes) != 2 or not all(
+                close_size(size, A4_PORTRAIT) for size in sizes
+            ):
                 found = ", ".join(
                     f"{width:.1f}x{height:.1f}pt" for width, height in sizes
                 )
                 raise CheckError(
-                    f"response smoke rows={rows}: expected one A4 portrait page; "
+                    f"response smoke rows={rows}: expected two A4 portrait pages; "
                     f"found {len(sizes)} page(s): {found}"
                 )
 
     print(
         "Typst smoke fixtures: ok (3 disclosures; response rows 4 and 8 "
-        "on one A4 page)"
+        "on an answer page plus a QR page)"
     )
 
 

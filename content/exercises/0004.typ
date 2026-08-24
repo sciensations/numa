@@ -62,6 +62,7 @@
       
     ],
   ),
+  figure: none,
   source: (
     organization: "FSJM",
     competition: "Demi-finale",

@@ -29,7 +29,7 @@ from common import (
 PROFILES = {"pilot": (2, 12, 12), "full": (14, 83, 83)}
 ID_RE = re.compile(r"[0-9a-f]{6}")
 SELECTION_RE = re.compile(r"[a-z][a-z0-9-]*")
-DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}")
+DATE_RE = re.compile(r"(?:\d{4}-\d{2}-\d{2}|\d{2}\.\d{2}\.\d{4})")
 
 
 def parse_args() -> argparse.Namespace:
@@ -156,7 +156,7 @@ def validate_selections(selections: list[Selection], exercises: list[Exercise]) 
                 errors.append(f"{location}: missing field {field}")
         date_match = re.search(r'(?m)^\s*date\s*:\s*"([^"]+)"', selection.text)
         if date_match and DATE_RE.fullmatch(date_match.group(1)) is None:
-            errors.append(f"{location}: date must use YYYY-MM-DD")
+            errors.append(f"{location}: date must use YYYY-MM-DD or DD.MM.YYYY")
         if '#import "../exercise-registry.typ": exercise-at' not in selection.text:
             errors.append(f"{location}: must import exercise-at from the generated registry")
         unknown = sorted(set(selection.serials) - serials)

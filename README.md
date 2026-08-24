@@ -9,7 +9,7 @@ The current pilot contains twelve exercises drawn from S01 and S03. The public s
 Each exercise has a permanent six-character hexadecimal identifier derived from its append-only serial number with the pinned Typst package `@preview/suiji:0.5.1`. The title, topic, difficulty, and selection membership may change without changing that identifier:
 
 ```text
-https://lcnbr.github.io/numa/e/3009ac.html
+https://sciensations.github.io/numa/e/3009ac.html
 ```
 
 Never change a published serial or reuse one. The short identifier is checked against a golden list.
@@ -98,7 +98,7 @@ To make an ad hoc card deck, change only the serial tuple in `teacher/cards.typ`
 
 Cards are A6 landscape cells imposed four-up on A4 landscape. Front sheets are followed by horizontally mirrored backs for short-edge duplex printing. Print at 100%, test one duplex sheet, cut on the center marks, and laminate.
 
-The response sheet is one-sided A4 portrait. Its QR codes point directly to the independent exercise pages, while the printed hexadecimal identifiers label each row.
+Each response pack has two one-sided A4 portrait pages: an answer sheet and a separate QR sheet. Every code points directly to an independent exercise page and carries the printed hexadecimal identifier.
 
 ## Validation
 
@@ -107,7 +107,7 @@ The response sheet is one-sided A4 portrait. Its QR codes point directly to the 
 - neutral exercise schema, structured sources, controlled topics, difficulty bounds, selections, and golden identifiers;
 - an exact generated-registry check, so adding a file never requires hand-maintained import aliases;
 - generated HTML links, assets, metadata, filtering hooks, and native disclosure semantics;
-- A4 page dimensions, six card-imposition pages, and both single-page response sheets;
+- A4 page dimensions, six card-imposition pages, and both two-page response packs;
 - every QR payload decoded at print resolution and every printed fallback URL;
 - smoke fixtures for disclosures and response sheets with four and eight rows;
 - missing optional content and accidental published placeholders.

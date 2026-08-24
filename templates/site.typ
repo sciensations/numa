@@ -1,7 +1,7 @@
 #import "../lib/logo.typ": numa-logo-html
 #import "../lib/model.typ": has-content, memberships, source-attribution, topic-label, topic-registry
 
-#let base-url = "https://lcnbr.github.io/numa"
+#let base-url = "https://sciensations.github.io/numa"
 
 #let _a(href, body, class: none) = {
   let attrs = (href: href)

@@ -21,9 +21,10 @@
         ID #upper(item.id)])
 }
 
-#let responses-document(selection) = {
+#let responses-document(selection, expected-pages: 2) = {
   let exercises = published-exercises(selection.exercises)
   let count = exercises.len()
+  let answer-row-height = if count <= 6 { 28mm } else { 21mm }
   assert(count >= 4 and count <= 8,
     message: "response sheets support four to eight exercises; " + selection.id
       + " has " + str(count))
@@ -64,22 +65,20 @@
       table.cell(fill: numa-blue.lighten(65%))[*Validation*],
     ),
     ..exercises.enumerate().map(((index, item)) => (
-      hide(table.cell[
-        #v(2mm)
-        #set text(weight: "bold", fill: numa-blue-dark)
-        #item.title
-        #v(-3mm)
-        #exercise-qrid(item)
-      ]),
-      
-      [],
-      [
-        
+      table.cell(fill: accent-for(item.serial).lighten(72%))[
+        #block(height: answer-row-height)[
+          #set text(weight: "bold", fill: numa-blue-dark)
+          #(index + 1) · #item.title
+          #linebreak()
+          #text(size: 6.5pt, weight: "regular")[ID #upper(item.id)]
+        ]
       ],
+      [],
+      [],
       // [
       //   #set text(size: 5.5pt, fill: numa-muted)
       //   #link(exercise-url(item))[
-      //     #text("https://lcnbr.github.io/")
+      //     #text("https://sciensations.github.io/")
       //     #linebreak()
       //     #text("numa/e/" + item.id + ".html")
       //   ]
@@ -100,13 +99,19 @@
   table(
     columns: (1fr,1fr,1fr,1fr),
     align: center,
-    ..((exercises).map(item=>{(table.cell(breakable: false)[
-    
+    ..exercises.map(item => (table.cell(breakable: false)[
         #set text(weight: "bold", fill: numa-blue-dark)
         #item.title
         #v(-3mm)
         #exercise-qrid(item)
-      ],)*12}).flatten())
+      ],)).flatten(),
   )
-  
+
+  if expected-pages != none {
+    context {
+      let pages = counter(page).final().first()
+      assert(pages == expected-pages,
+        message: "response pack for " + selection.id + " must have " + str(expected-pages) + " pages; found " + str(pages))
+    }
+  }
 }

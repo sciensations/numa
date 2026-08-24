@@ -26,7 +26,7 @@
   
   ],
   ),
-  
+  figure: none,
   source: (
     organization: "FSJM",
     competition: "Quarts de finale",
