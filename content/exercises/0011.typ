@@ -1,3 +1,4 @@
+#import "../../lib/authoring.typ": exercise-image
 #import "../../lib/model.typ": exercise
 
 #let item = exercise(
@@ -5,23 +6,19 @@
   title: [Les cinq jetons],
   topics: ("arithmetique", "optimisation", "logique-strategie"),
   difficulty: 2.5,
-  statement_parts: (
-    [
-      Mathilde a trouvé dans son grenier les cinq jetons ci-dessous, posés sur une règle en bois. Elle souhaite les disposer autrement sur la règle, de façon à obtenir une opération dont le résultat soit le plus grand possible.
+  content: [
+    Mathilde a trouvé dans son grenier les cinq jetons ci-dessous, posés sur une règle en bois. Elle souhaite les disposer autrement sur la règle, de façon à obtenir une opération dont le résultat soit le plus grand possible.
 
-      Quel sera ce résultat ?
+    Quel sera ce résultat ?
 
-      #v(1fr)
-      #align(center,image(
-        "../../assets/exercises/s01/tokens.png",
-        width: 5cm,
-        alt: "Cinq jetons portant 3, 4, 5, 6 et le signe de multiplication.",
-      ))
-      #v(1fr)
-      _Note : le « 6 » retourné peut se transformer en « 9 »._
-    ],
-  ),
-  figure: none,
+    #exercise-image(
+      "/assets/exercises/s01/tokens.png",
+      width: 50mm,
+      alt: "Cinq jetons portant 3, 4, 5, 6 et le signe de multiplication.",
+    )
+
+    _Note : le « 6 » retourné peut se transformer en « 9 »._
+  ],
   source: (
     organization: "FSJM",
     competition: "Finale internationale, jour 2",

@@ -1,3 +1,4 @@
+#import "../../lib/authoring.typ": exercise-diagram
 #import "../../lib/model.typ": exercise
 
 #let item = exercise(
@@ -5,28 +6,35 @@
   title: [Le patron du dé],
   topics: ("geometrie", "logique-strategie"),
   difficulty: 1.0,
-  statement_parts: (
-    [
-      Dans un dé « normal », la somme des points situés sur deux faces opposées est toujours égale à 7.
-     #let cell = grid.cell.with(
-    fill: luma(235),
-    stroke: 0.5pt + black,
-    inset: 0pt,
-    align: center + horizon,
-  )
-  #let size=9mm 
-#align(center,grid(
-    columns: (size,)*4,
-    rows: (size,) * 3,
-    gutter: 0pt,
+  content: [
+    Dans un dé « normal », la somme des points situés sur deux faces opposées est toujours égale à 7.
 
-    cell(x: 0, y: 1)[2],cell(x: 1, y: 1)[3],cell(x: 1, y: 0)[1],cell(x: 2, y: 1)[],cell(x: 3, y: 1)[],cell(x: 2, y: 2)[]))
-      Complète les faces du patron de ce dé normal.
+    #let cell = grid.cell.with(
+      fill: luma(235),
+      stroke: 0.5pt + black,
+      inset: 0pt,
+      align: center + horizon,
+    )
+    #let size = 9mm
+    #exercise-diagram(
+      alt: "Patron de dé formé de quatre cases alignées, avec une case au-dessus de la deuxième et une case sous la troisième ; les trois cases numérotées portent 2, 3 et 1.",
+    )[
+      #grid(
+        columns: (size,) * 4,
+        rows: (size,) * 3,
+        gutter: 0pt,
 
-  
+        cell(x: 0, y: 1)[2],
+        cell(x: 1, y: 1)[3],
+        cell(x: 1, y: 0)[1],
+        cell(x: 2, y: 1)[],
+        cell(x: 3, y: 1)[],
+        cell(x: 2, y: 2)[],
+      )
+    ]
+
+    Complète les faces du patron de ce dé normal.
   ],
-  ),
-  figure: none,
   source: (
     organization: "FSJM",
     competition: "Quarts de finale",

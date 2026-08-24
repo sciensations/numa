@@ -170,7 +170,6 @@
 }
 
 #let exercise-page(selections, item) = {
-  let parts = item.statement_parts
   let used-in = memberships(selections, item)
   _shell(
     item.title,
@@ -200,21 +199,7 @@
         }
       ]
       #html.elem("section", attrs: (class: "statement"))[
-        #for (index, part) in parts.enumerate() {
-          if index > 0 { html.elem("h2", attrs: (class: "continuation"))[Suite] }
-          html.elem("div", attrs: (class: "statement__part"))[#part]
-          if index == 0 and item.figure != none {
-            html.elem("figure", attrs: (class: "exercise-figure"))[
-              #html.elem("img", attrs: (
-                src: "../" + item.figure.path,
-                alt: item.figure.alt,
-                loading: "lazy",
-              ))
-              #let caption = item.figure.at("caption", default: none)
-              #if has-content(caption) { html.elem("figcaption")[#caption] }
-            ]
-          }
-        }
+        #html.elem("div", attrs: (class: "statement__content"))[#item.content]
       ]
       #html.elem("p", attrs: (class: "source"))[#source-attribution(item.source)]
       #if has-content(item.hints) { _disclosure([Indices], item.hints) }

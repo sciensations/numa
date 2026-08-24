@@ -1,3 +1,4 @@
+#import "../../lib/authoring.typ": exercise-image
 #import "../../lib/model.typ": exercise
 
 #let item = exercise(
@@ -5,17 +6,17 @@
   title: [Les bosses],
   topics: ("arithmetique", "optimisation"),
   difficulty: 1.5,
-  statement_parts: (
-    [
-      Un troupeau est composé de chameaux et de dromadaires (au moins un animal de chaque espèce). Au total, on compte 29 bosses. Un chameau a deux bosses, un dromadaire une seule.
+  content: [
+    Un troupeau est composé de chameaux et de dromadaires (au moins un animal de chaque espèce). Au total, on compte 29 bosses. Un chameau a deux bosses, un dromadaire une seule.
 
-      Combien le troupeau compte-t-il de bêtes, au minimum ?
-      #v(1fr)
-      #align(center,image("../../assets/exercises/s01/dromadaire.png", width: 40%))
-      #v(1fr)
-    ],
-  ),
-  figure: none,
+    Combien le troupeau compte-t-il de bêtes, au minimum ?
+
+    #exercise-image(
+      "/assets/exercises/s01/dromadaire.png",
+      width: 40mm,
+      alt: "Un dromadaire à une bosse et un chameau à deux bosses.",
+    )
+  ],
   source: (
     organization: "FSJM",
     competition: "Finale internationale, jour 2",

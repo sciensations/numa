@@ -16,32 +16,8 @@
 
 
 
-#let _front-body(item) = {
-  let statement = item.statement_parts.first()
-  if item.figure == none {
-    statement
-  } else {
-    grid(
-      columns: (1.9fr, 1fr),
-      gutter: 4mm,
-      statement,
-      align(center + horizon)[
-         #image(
-          "../" + item.figure.path,
-          width: 100%,
-          height: 49mm,
-          fit: "contain",
-          alt: item.figure.alt,
-        )
-      ],
-    )
-  }
-}
-
-#let _exercise-side(item, continuation: false) = {
+#let _exercise-side(item) = {
   let accent = accent-for(item.serial)
-  let heading-text = if continuation { [#item.title · _suite_] } else { item.title }
-  let statement = if continuation { item.statement_parts.at(1) } else { _front-body(item) }
   let heading-block = block(
     width: 100%,
     fill: accent.lighten(70%),
@@ -53,18 +29,13 @@
       gutter: 3mm,
       align(left + horizon)[
         #set text(size: 14pt, weight: "bold", fill: numa-blue-dark)
-        #heading-text
+        #item.title
       ],
     )
   ]
   let statement-block = block(width: 100%,inset:4mm)[
     #set text(size: 10.5pt)
-    #show table: it => align(center, it)
-    #align(left)[#statement]
-  ]
-  let source-block = block(width: 100%)[
-    #set text(size: 7pt, weight: "light", fill: numa-muted)
-    #align(right)[#emph(source-attribution(item.source))]
+    #align(left)[#item.content]
   ]
   let natural = block(width: 136mm)[
     #heading-block
@@ -74,9 +45,9 @@
 
   layout(_ => {
     let measured = measure(natural)
-    // assert(measured.height <= 93mm,
-    //   message: "card side overflows for " + item.id + " ("
-    //     + str(calc.round(measured.height / 1mm, digits: 1)) + "mm > 93mm)")
+    assert(measured.height <= 93mm,
+      message: "card front overflows for " + item.id + " ("
+        + str(calc.round(measured.height / 1mm, digits: 1)) + "mm > 93mm)")
     block(
       width: 148mm,
       height: 105mm,
@@ -86,7 +57,7 @@
     )[
       #grid(
         columns: (1fr,),
-        rows: (auto, 1fr, auto),
+        rows: (auto, 1fr),
         row-gutter: 2.8mm,
         heading-block,
         statement-block,
@@ -145,8 +116,6 @@
 
 #let _back(item) = if item == none {
   _blank-cell()
-} else if item.statement_parts.len() == 2 {
-  _exercise-side(item, continuation: true)
 } else {
   _branded-back(item)
 }

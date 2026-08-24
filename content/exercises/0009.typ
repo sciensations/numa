@@ -5,18 +5,15 @@
   title: [Le nombre mystérieux],
   topics: ("arithmetique", "logique-strategie"),
   difficulty: 2.0,
-  statement_parts: (
-    [
-      Trouve un nombre de 3 chiffres, tous différents, tel que :
+  content: [
+    Trouve un nombre de 3 chiffres, tous différents, tel que :
 
-      - la somme des 3 chiffres vaut 10 ;
-      - le produit des 2 premiers chiffres vaut 6 ;
-      - le chiffre des dizaines est le plus grand des trois.
+    - la somme des 3 chiffres vaut 10 ;
+    - le produit des 2 premiers chiffres vaut 6 ;
+    - le chiffre des dizaines est le plus grand des trois.
 
-      Quel est ce nombre ?
-    ],
-  ),
-  figure: none,
+    Quel est ce nombre ?
+  ],
   source: (
     organization: "FSJM",
     competition: "Demi-finale",

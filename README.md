@@ -65,8 +65,7 @@ An exercise record looks like this:
 #let item = exercise(
   serial: 13,
   title: [Titre],
-  statement_parts: ([Énoncé.],),
-  figure: none,
+  content: [Énoncé.],
   source: (
     organization: "FSJM",
     competition: "Quarts de finale",
@@ -85,9 +84,11 @@ An exercise record looks like this:
 )
 ```
 
-`statement_parts` contains one or two content blocks. A one-part exercise gets a branded reverse; a two-part exercise continues on the reverse. The controlled topic vocabulary and all validation rules live in `lib/model.typ`.
+`content` is the complete author-controlled body of one card side. Text, diagrams, images, spacing, columns, and local layout all belong in that single Typst block. The shared template adds only the title frame and the branded reverse, and compilation rejects a body that exceeds the front's safe area. The controlled topic vocabulary and validation rules live in `lib/model.typ`.
 
-Figures use repository-relative paths under `assets/` and require meaningful alternative text. Drafts do not appear on the public site or response sheets. Empty hints, enrichment, and solutions are deliberately omitted from public pages; the generated `content-status.json` records their presence without blocking publication.
+For visuals that must work in print and experimental HTML export, import the needed helpers from `lib/authoring.typ` inside the exercise file. `exercise-image` places an image, `exercise-diagram` preserves a code-drawn layout, `exercise-center` keeps a semantic table centered, and `exercise-columns` provides responsive side-by-side content. They are called exactly where the author wants the visual; there is no separate figure field or template-selected layout. Image paths start at `/assets/` and every visual requires meaningful alternative text.
+
+Drafts do not appear on the public site or response sheets. Empty hints, enrichment, and solutions are deliberately omitted from public pages; the generated `content-status.json` records their presence without blocking publication.
 
 ## Selections and response sheets
 

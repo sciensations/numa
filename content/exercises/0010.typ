@@ -5,14 +5,11 @@
   title: [Devine âge],
   topics: ("arithmetique",),
   difficulty: 1.5,
-  statement_parts: (
-    [
-      Il y a deux ans, Alice et Alain avaient 20 ans à eux deux. Aujourd'hui, Alain a 10 ans.
+  content: [
+    Il y a deux ans, Alice et Alain avaient 20 ans à eux deux. Aujourd'hui, Alain a 10 ans.
 
-      Quel est l'âge d'Alice ?
-    ],
-  ),
-  figure: none,
+    Quel est l'âge d'Alice ?
+  ],
   source: (
     organization: "FSJM",
     competition: "Finale internationale, jour 2",

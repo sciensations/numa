@@ -1,3 +1,4 @@
+#import "../../lib/authoring.typ": exercise-center
 #import "../../lib/model.typ": exercise
 
 #let item = exercise(
@@ -5,13 +6,12 @@
   title: [Défi - Plus ou moins un],
   topics: ("combinatoire", "logique-strategie", "optimisation"),
   difficulty: 4.5,
-  statement_parts: (
-    [
-      Bob a écrit le nombre 2 au centre d'un tableau 3 × 3. Alice doit écrire un entier plus grand que zéro dans chacune des huit autres cases. Dans chaque paire de cases voisines (qui partagent un côté complet), les deux nombres doivent différer de 1. Le score d'Alice est la somme des neuf nombres.
+  content: [
+    Bob a écrit le nombre 2 au centre d'un tableau 3 × 3. Alice doit écrire un entier plus grand que zéro dans chacune des huit autres cases. Dans chaque paire de cases voisines (qui partagent un côté complet), les deux nombres doivent différer de 1. Le score d'Alice est la somme des neuf nombres.
 
-    
-      Alice peut obtenir les scores 20 et 18. Combien de scores AUTRES que 20 et 18 peut-elle obtenir ?
+    Alice peut obtenir les scores 20 et 18. Combien de scores AUTRES que 20 et 18 peut-elle obtenir ?
 
+    #exercise-center[
       #table(
         columns: (8mm, 8mm, 8mm),
         rows: (8mm, 8mm, 8mm),
@@ -22,9 +22,8 @@
         [], [*2*], [],
         [], [], [],
       )
-    ],
-  ),
-  figure: none,
+    ]
+  ],
   source: (
     organization: "FSJM",
     competition: "Finale internationale, jour 2",

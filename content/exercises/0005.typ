@@ -5,14 +5,11 @@
   title: [Le code],
   topics: ("nombres-divisibilite", "logique-strategie"),
   difficulty: 4.0,
-  statement_parts: (
-    [
-      Chacun des chiffres de 1 à 6 est utilisé une fois pour former le code du coffre-fort de Picsou. Ce nombre de 6 chiffres est pair. Pour chaque paire de chiffres voisins, l'un est multiple de l'autre.
+  content: [
+    Chacun des chiffres de 1 à 6 est utilisé une fois pour former le code du coffre-fort de Picsou. Ce nombre de 6 chiffres est pair. Pour chaque paire de chiffres voisins, l'un est multiple de l'autre.
 
-      Quel est le code du coffre-fort ?
-    ],
-  ),
-  figure: none,
+    Quel est le code du coffre-fort ?
+  ],
   source: (
     organization: "FSJM",
     competition: "Quarts de finale",

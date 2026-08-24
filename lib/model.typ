@@ -56,10 +56,9 @@
   let id = _required(item, "id", "exercise")
   let serial = _required(item, "serial", "exercise " + str(id))
   let title = _required(item, "title", "exercise " + str(id))
-  let parts = _required(item, "statement_parts", "exercise " + str(id))
+  let body = _required(item, "content", "exercise " + str(id))
   let topics = _required(item, "topics", "exercise " + str(id))
   let difficulty = _required(item, "difficulty", "exercise " + str(id))
-  let figure = _required(item, "figure", "exercise " + str(id))
   let source = _required(item, "source", "exercise " + str(id))
   let hints = _required(item, "hints", "exercise " + str(id))
   let extra = _required(item, "extra", "exercise " + str(id))
@@ -73,9 +72,8 @@
   assert(id.match(regex("^[0-9a-f]{6}$")) != none,
     message: "exercise id must be six lowercase hexadecimal characters")
   assert(has-content(title), message: "exercise " + id + " needs a title")
-  assert(type(parts) == array and parts.len() in (1, 2),
-    message: "exercise " + id + " needs one or two statement parts")
-  assert(parts.all(has-content), message: "exercise " + id + " contains an empty statement part")
+  assert(type(body) == content and has-content(body),
+    message: "exercise " + id + " needs one non-empty content block")
   assert(type(topics) == array and topics.len() >= 1,
     message: "exercise " + id + " needs at least one topic")
   assert(topics.all(topic => type(topic) == str and topic in topic-registry),
@@ -92,26 +90,15 @@
   assert(status in ("draft", "published"),
     message: "exercise " + id + " status must be draft or published")
 
-  if figure != none {
-    assert(type(figure) == dictionary,
-      message: "exercise " + id + " figure must be a dictionary or none")
-    let path = _required(figure, "path", "figure for " + id)
-    let alt = _required(figure, "alt", "figure for " + id)
-    assert(type(path) == str and path.trim() != "" and not path.starts-with("/"),
-      message: "figure path for " + id + " must be repository-relative")
-    assert(type(alt) == str and alt.trim() != "",
-      message: "figure alt text for " + id + " is required")
-  }
   item
 }
 
 #let exercise(
   serial: none,
   title: none,
-  statement_parts: none,
+  content: none,
   topics: none,
   difficulty: none,
-  figure: none,
   source: none,
   hints: (),
   extra: none,
@@ -121,10 +108,9 @@
   id: exercise-id(serial),
   serial: serial,
   title: title,
-  statement_parts: statement_parts,
+  content: content,
   topics: topics,
   difficulty: difficulty,
-  figure: figure,
   source: source,
   hints: hints,
   extra: extra,

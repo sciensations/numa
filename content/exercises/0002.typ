@@ -5,16 +5,13 @@
   title: [La paire de chaussures],
   topics: ("combinatoire", "logique-strategie"),
   difficulty: 2.25,
-  statement_parts: (
-    [
-      Une panne d'électricité a plongé l'appartement de Crépin dans l'obscurité totale : il ne distingue plus ni les couleurs ni les formes (pied gauche ou pied droit) de ses chaussures.
+  content: [
+    Une panne d'électricité a plongé l'appartement de Crépin dans l'obscurité totale : il ne distingue plus ni les couleurs ni les formes (pied gauche ou pied droit) de ses chaussures.
 
-      Un meuble contient 3 chaussures noires du pied gauche, 7 chaussures noires du pied droit, 5 chaussures marron du pied gauche et 2 chaussures marron du pied droit.
+    Un meuble contient 3 chaussures noires du pied gauche, 7 chaussures noires du pied droit, 5 chaussures marron du pied gauche et 2 chaussures marron du pied droit.
 
-      Au minimum, combien de chaussures Crépin doit-il prendre pour être sûr d'avoir au moins une paire (un pied gauche et un pied droit) de la même couleur ?
-    ],
-  ),
-  figure: none,
+    Au minimum, combien de chaussures Crépin doit-il prendre pour être sûr d'avoir au moins une paire (un pied gauche et un pied droit) de la même couleur ?
+  ],
   source: (
     organization: "FSJM",
     competition: "Finale internationale, jour 1",

@@ -6,10 +6,7 @@
   title: [À compléter],
   topics: ("logique-strategie",),
   difficulty: 1.0,
-  statement_parts: (
-    [Énoncé à compléter.],
-  ),
-  figure: none,
+  content: [Énoncé à compléter.],
   source: (
     organization: "À compléter",
     competition: "À compléter",

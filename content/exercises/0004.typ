@@ -1,3 +1,4 @@
+#import "../../lib/authoring.typ": exercise-diagram
 #import "../../lib/model.typ": exercise
 #let pyramid-table(size: 21pt, levels: 5) = {
   let columns = 2 * levels - 1
@@ -48,21 +49,19 @@
   title: [La pyramide de Mathilde],
   topics: ("nombres-divisibilite", "suites-motifs"),
   difficulty: 3.25,
-  statement_parts: (
-    [
-      Mathilde a construit une pyramide de nombres. Les nombres entiers à partir de 1 se succèdent comme le montre le dessin, qui représente les cinq étages du haut. La pyramide de Mathilde compte 22 étages.
+  content: [
+    Mathilde a construit une pyramide de nombres. Les nombres entiers à partir de 1 se succèdent comme le montre le dessin, qui représente les cinq étages du haut. La pyramide de Mathilde compte 22 étages.
 
-      #align(center)[
-        #pyramid-table()
-      ]
+    #exercise-diagram(
+      alt: "Pyramide à cinq étages contenant successivement 1, puis 2 à 4, 5 à 9, 10 à 16, et enfin 17, 18 puis des points de suspension.",
+    )[
+      #pyramid-table()
+    ]
 
-      Combien de nombres impairs compte l'étage du bas ?
+    Combien de nombres impairs compte l'étage du bas ?
 
 
-      
-    ],
-  ),
-  figure: none,
+  ],
   source: (
     organization: "FSJM",
     competition: "Demi-finale",

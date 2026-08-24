@@ -40,14 +40,6 @@
 }
 #asset("robots.txt", read("assets/robots.txt", encoding: none))
 
-#let figure-paths = ()
-#for item in active-exercises {
-  if item.figure != none and not figure-paths.contains(item.figure.path) {
-    figure-paths.push(item.figure.path)
-  }
-}
-#for path in figure-paths { asset(path, read(path, encoding: none)) }
-
 #let content-status = (
   exercises: catalog-stats.exercises,
   selections: catalog-stats.selections,
