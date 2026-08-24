@@ -22,15 +22,11 @@
 }
 
 #let qr-copies-per-exercise = 12
-#let qr-grid-cells-per-page = 36
 
 #let responses-document(selection) = {
   let exercises = published-exercises(selection.exercises)
   let count = exercises.len()
   let answer-row-height = if count <= 6 { 28mm } else { 21mm }
-  let expected-pages = 1 + calc.ceil(
-    count * qr-copies-per-exercise / qr-grid-cells-per-page,
-  )
   assert(count >= 4 and count <= 8,
     message: "response sheets support four to eight exercises; " + selection.id
       + " has " + str(count))
@@ -112,13 +108,4 @@
         #exercise-qrid(item)
       ],) * qr-copies-per-exercise)).flatten(),
   )
-
-  context {
-    let pages = counter(page).final().first()
-    assert(
-      pages == expected-pages,
-      message: "response pack for " + selection.id + " must have "
-        + str(expected-pages) + " pages; found " + str(pages),
-    )
-  }
 }

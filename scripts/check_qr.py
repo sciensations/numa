@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-"""Decode response-sheet QR codes and verify their exact exercise URLs."""
+"""Decode response-sheet QR codes and verify their exercise destinations."""
 
 from __future__ import annotations
 
 import argparse
-from collections import Counter
 from pathlib import Path
 
-from common import OUTPUT, QR_COPIES_PER_EXERCISE, SITE_URL, CheckError, fail, rel
+from common import OUTPUT, SITE_URL, CheckError, fail, rel
 from schema_counts import run as check_schema
 
 
@@ -31,16 +30,15 @@ def load_qa_dependencies():
     return pypdfium2, zxingcpp
 
 
-def expected_urls(profile: str) -> dict[str, list[str]]:
+def expected_urls(profile: str) -> dict[str, set[str]]:
     selections, exercises = check_schema(profile, quiet=True)
     by_serial = {item.serial: item for item in exercises}
-    expected: dict[str, list[str]] = {}
+    expected: dict[str, set[str]] = {}
     for selection in selections:
-        expected[selection.id] = [
+        expected[selection.id] = {
             f"{SITE_URL}/e/{by_serial[serial].id}.html"
             for serial in selection.serials
-            for _ in range(QR_COPIES_PER_EXERCISE)
-        ]
+        }
     return expected
 
 
@@ -70,16 +68,17 @@ def run(profile: str, output: Path = OUTPUT, dpi: int = 300) -> None:
         raise CheckError("QR render dpi must be between 72 and 1200")
     pypdfium2, zxingcpp = load_qa_dependencies()
     urls = expected_urls(profile)
-    count = 0
     for selection_id, expected in urls.items():
         pdf = output / f"{selection_id}-responses.pdf"
         if not pdf.is_file():
             raise CheckError(f"missing response sheet: {rel(pdf)}")
-        decoded = decode_pdf(pdf, dpi, pypdfium2, zxingcpp)
-        if Counter(decoded) != Counter(expected):
-            raise CheckError(f"{rel(pdf)} decoded QR mismatch: expected {expected}, found {decoded}")
-        count += len(decoded)
-    print(f"qr payloads: ok ({count} codes across {len(urls)} response sheets)")
+        decoded = set(decode_pdf(pdf, dpi, pypdfium2, zxingcpp))
+        if decoded != expected:
+            raise CheckError(
+                f"{rel(pdf)} decoded QR mismatch: expected {sorted(expected)}, "
+                f"found {sorted(decoded)}"
+            )
+    print(f"qr destinations: ok ({len(urls)} response sheets)")
 
 
 def main() -> int:

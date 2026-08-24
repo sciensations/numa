@@ -107,8 +107,8 @@ Each response pack has one A4 answer sheet followed by printable QR sheets. Ever
 - neutral exercise schema, structured sources, controlled topics, difficulty bounds, selections, and golden identifiers;
 - an exact generated-registry check, so adding a file never requires hand-maintained import aliases;
 - generated HTML links, assets, metadata, filtering hooks, and native disclosure semantics;
-- A4 page dimensions, six card-imposition pages, and all three pages of both current response packs;
-- all 12 copies of every QR payload decoded at print resolution and every printed fallback identifier;
+- A4 page dimensions and the card-imposition structure;
+- QR destinations decoded at print resolution and checked against the exercise URLs;
 - smoke fixtures for disclosures and response sheets with four and eight rows;
 - missing optional content and accidental published placeholders.
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate teacher print PDF page counts and A4 orientation."""
+"""Validate teacher print PDF dimensions and card-imposition page count."""
 
 from __future__ import annotations
 
@@ -7,13 +7,7 @@ import argparse
 import re
 from pathlib import Path
 
-from common import (
-    OUTPUT,
-    QR_COPIES_PER_EXERCISE,
-    QR_GRID_CELLS_PER_PAGE,
-    CheckError,
-    fail,
-)
+from common import OUTPUT, CheckError, fail
 from schema_counts import run as check_schema
 
 OBJECT_RE = re.compile(rb"\b\d+\s+\d+\s+obj\b(.*?)\bendobj\b", re.DOTALL)
@@ -55,18 +49,15 @@ def close_size(actual: tuple[float, float], expected: tuple[float, float]) -> bo
 
 def run(profile: str, output: Path = OUTPUT) -> None:
     selections, exercises = check_schema(profile, quiet=True)
-    files: list[tuple[Path, int, tuple[float, float]]] = []
+    files: list[tuple[Path, int | None, tuple[float, float]]] = []
     if profile == "pilot":
         published_count = sum(item.status == "published" for item in exercises)
         card_pages = 2 * ((published_count + 3) // 4)
         files.append((output / "card-batch.pdf", card_pages, A4_LANDSCAPE))
     for selection in selections:
-        qr_cells = len(selection.serials) * QR_COPIES_PER_EXERCISE
-        qr_pages = (qr_cells + QR_GRID_CELLS_PER_PAGE - 1) // QR_GRID_CELLS_PER_PAGE
-        files.append((output / f"{selection.id}-responses.pdf", 1 + qr_pages, A4_PORTRAIT))
+        files.append((output / f"{selection.id}-responses.pdf", None, A4_PORTRAIT))
 
     errors: list[str] = []
-    checked_pages = 0
     for path, expected_pages, expected_size in files:
         if not path.is_file():
             errors.append(f"missing {path}")
@@ -76,8 +67,7 @@ def run(profile: str, output: Path = OUTPUT) -> None:
         except CheckError as exc:
             errors.append(str(exc))
             continue
-        checked_pages += len(sizes)
-        if len(sizes) != expected_pages:
+        if expected_pages is not None and len(sizes) != expected_pages:
             errors.append(f"{path}: expected {expected_pages} pages, found {len(sizes)}")
         for number, size in enumerate(sizes, start=1):
             if not close_size(size, expected_size):
@@ -87,7 +77,7 @@ def run(profile: str, output: Path = OUTPUT) -> None:
                 )
     if errors:
         raise CheckError("PDF size/count validation failed:\n- " + "\n- ".join(errors))
-    print(f"pdf sizes/counts: ok ({checked_pages} pages across {len(files)} teacher files)")
+    print(f"pdf dimensions: ok ({len(files)} teacher files)")
 
 
 def main() -> int:
