@@ -98,7 +98,7 @@ To make an ad hoc card deck, change only the serial tuple in `teacher/cards.typ`
 
 Cards are A6 landscape cells imposed four-up on A4 landscape. Front sheets are followed by horizontally mirrored backs for short-edge duplex printing. Print at 100%, test one duplex sheet, cut on the center marks, and laminate.
 
-Each response pack has two one-sided A4 portrait pages: an answer sheet and a separate QR sheet. Every code points directly to an independent exercise page and carries the printed hexadecimal identifier.
+Each response pack has one A4 answer sheet followed by printable QR sheets. Every exercise code is repeated 12 times for cutting and distribution; every copy points directly to the independent exercise page and carries the printed hexadecimal identifier. The current six-exercise selections produce one answer page and two QR pages.
 
 ## Validation
 
@@ -107,8 +107,8 @@ Each response pack has two one-sided A4 portrait pages: an answer sheet and a se
 - neutral exercise schema, structured sources, controlled topics, difficulty bounds, selections, and golden identifiers;
 - an exact generated-registry check, so adding a file never requires hand-maintained import aliases;
 - generated HTML links, assets, metadata, filtering hooks, and native disclosure semantics;
-- A4 page dimensions, six card-imposition pages, and both two-page response packs;
-- every QR payload decoded at print resolution and every printed fallback URL;
+- A4 page dimensions, six card-imposition pages, and all three pages of both current response packs;
+- all 12 copies of every QR payload decoded at print resolution and every printed fallback identifier;
 - smoke fixtures for disclosures and response sheets with four and eight rows;
 - missing optional content and accidental published placeholders.
 

@@ -9,7 +9,14 @@ from pathlib import Path
 
 from check_html import References
 from check_pdfs import A4_PORTRAIT, close_size, page_sizes
-from common import ROOT, CheckError, fail, require_typst_version
+from common import (
+    ROOT,
+    QR_COPIES_PER_EXERCISE,
+    QR_GRID_CELLS_PER_PAGE,
+    CheckError,
+    fail,
+    require_typst_version,
+)
 
 
 def compile_fixture(typst: str, source: Path, output: Path, *options: str) -> None:
@@ -81,20 +88,23 @@ def run() -> None:
                 f"rows={rows}",
             )
             sizes = page_sizes(pdf)
-            if len(sizes) != 2 or not all(
+            qr_cells = rows * QR_COPIES_PER_EXERCISE
+            qr_pages = (qr_cells + QR_GRID_CELLS_PER_PAGE - 1) // QR_GRID_CELLS_PER_PAGE
+            expected_pages = 1 + qr_pages
+            if len(sizes) != expected_pages or not all(
                 close_size(size, A4_PORTRAIT) for size in sizes
             ):
                 found = ", ".join(
                     f"{width:.1f}x{height:.1f}pt" for width, height in sizes
                 )
                 raise CheckError(
-                    f"response smoke rows={rows}: expected two A4 portrait pages; "
+                    f"response smoke rows={rows}: expected {expected_pages} A4 portrait pages; "
                     f"found {len(sizes)} page(s): {found}"
                 )
 
     print(
         "Typst smoke fixtures: ok (3 disclosures; response rows 4 and 8 "
-        "on an answer page plus a QR page)"
+        "with 12 QR copies per exercise)"
     )
 
 

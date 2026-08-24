@@ -10,7 +10,7 @@
 #let selection = source + (exercises: selected)
 
 #if sys.inputs.at("document", default: "cards") == "responses" {
-  responses-document(selection, expected-pages: none)
+  responses-document(selection)
 } else {
   cards-document(selected)
 }

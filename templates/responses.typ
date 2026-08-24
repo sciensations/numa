@@ -21,7 +21,9 @@
         ID #upper(item.id)])
 }
 
-#let responses-document(selection, expected-pages: 2) = {
+#let qr-copies-per-exercise = 12
+
+#let responses-document(selection) = {
   let exercises = published-exercises(selection.exercises)
   let count = exercises.len()
   let answer-row-height = if count <= 6 { 28mm } else { 21mm }
@@ -99,19 +101,11 @@
   table(
     columns: (1fr,1fr,1fr,1fr),
     align: center,
-    ..exercises.map(item => (table.cell(breakable: false)[
+    ..exercises.map(item => ((table.cell(breakable: false)[
         #set text(weight: "bold", fill: numa-blue-dark)
         #item.title
         #v(-3mm)
         #exercise-qrid(item)
-      ],)).flatten(),
+      ],) * qr-copies-per-exercise)).flatten(),
   )
-
-  if expected-pages != none {
-    context {
-      let pages = counter(page).final().first()
-      assert(pages == expected-pages,
-        message: "response pack for " + selection.id + " must have " + str(expected-pages) + " pages; found " + str(pages))
-    }
-  }
 }

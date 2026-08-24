@@ -7,7 +7,13 @@ import argparse
 import re
 from pathlib import Path
 
-from common import OUTPUT, CheckError, fail
+from common import (
+    OUTPUT,
+    QR_COPIES_PER_EXERCISE,
+    QR_GRID_CELLS_PER_PAGE,
+    CheckError,
+    fail,
+)
 from schema_counts import run as check_schema
 
 OBJECT_RE = re.compile(rb"\b\d+\s+\d+\s+obj\b(.*?)\bendobj\b", re.DOTALL)
@@ -55,7 +61,9 @@ def run(profile: str, output: Path = OUTPUT) -> None:
         card_pages = 2 * ((published_count + 3) // 4)
         files.append((output / "card-batch.pdf", card_pages, A4_LANDSCAPE))
     for selection in selections:
-        files.append((output / f"{selection.id}-responses.pdf", 2, A4_PORTRAIT))
+        qr_cells = len(selection.serials) * QR_COPIES_PER_EXERCISE
+        qr_pages = (qr_cells + QR_GRID_CELLS_PER_PAGE - 1) // QR_GRID_CELLS_PER_PAGE
+        files.append((output / f"{selection.id}-responses.pdf", 1 + qr_pages, A4_PORTRAIT))
 
     errors: list[str] = []
     checked_pages = 0

@@ -7,7 +7,7 @@ import argparse
 from collections import Counter
 from pathlib import Path
 
-from common import OUTPUT, SITE_URL, CheckError, fail, rel
+from common import OUTPUT, QR_COPIES_PER_EXERCISE, SITE_URL, CheckError, fail, rel
 from schema_counts import run as check_schema
 
 
@@ -37,7 +37,9 @@ def expected_urls(profile: str) -> dict[str, list[str]]:
     expected: dict[str, list[str]] = {}
     for selection in selections:
         expected[selection.id] = [
-            f"{SITE_URL}/e/{by_serial[serial].id}.html" for serial in selection.serials
+            f"{SITE_URL}/e/{by_serial[serial].id}.html"
+            for serial in selection.serials
+            for _ in range(QR_COPIES_PER_EXERCISE)
         ]
     return expected
 

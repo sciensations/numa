@@ -20,6 +20,8 @@ OUTPUT = ROOT / "output" / "pdf"
 BUNDLE = ROOT / "bundle.typ"
 TYPST_VERSION = "0.15.1"
 SITE_URL = "https://sciensations.github.io/numa"
+QR_COPIES_PER_EXERCISE = 12
+QR_GRID_CELLS_PER_PAGE = 40
 
 REQUIRED_EXERCISE_FIELDS = (
     "serial",
