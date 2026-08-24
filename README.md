@@ -18,11 +18,10 @@ Never change a published serial or reuse one. The short identifier is checked ag
 
 - [Typst 0.15.1](https://github.com/typst/typst/releases/tag/v0.15.1), exactly;
 - [CeTZ 0.5.2](https://typst.app/universe/package/cetz/), pinned by the logo import;
-- [just](https://just.systems/), optional but convenient;
-- Python 3.10 or newer;
-- the pinned QA packages in `scripts/requirements-qa.txt`.
+- Bash 3.2 or newer;
+- [just](https://just.systems/), optional but convenient.
 
-The project pins Typst because its HTML bundle export is experimental. Builds ignore system fonts and use the committed Atkinson Hyperlegible Next files plus Typst's embedded fonts. `just setup` downloads the exact Typst binary into the ignored `.tools/` directory when needed.
+The project pins Typst because its HTML bundle export is experimental. Builds ignore system fonts and use the committed Atkinson Hyperlegible Next files plus Typst's embedded fonts. The repository has no Python dependency; CI downloads the pinned Typst binary, while local commands use `typst` from `PATH` or the binary named by `TYPST`.
 
 The Numa wordmark lives in `lib/logo.typ` as closed, filled CeTZ surfaces with zero-width strokes. Print templates draw those surfaces directly; the website wraps the same drawing as accessible inline SVG. The old PNG under `assets/brand/` is retained only as a visual reference and is not bundled or rendered.
 
@@ -48,13 +47,13 @@ just print-response s03
 just check
 ```
 
-The direct Python equivalents are `python3 scripts/new_exercise.py 13`, `python3 scripts/preview.py`, `python3 scripts/build.py`, `python3 scripts/compile_print.py cards`, `python3 scripts/compile_print.py response s01`, `python3 scripts/compile_print.py response s03`, and `python3 scripts/check.py --profile pilot`.
+Without `just`, the build and print recipes are the direct Typst commands shown in the `justfile`. The only shell helpers are `tools/new-exercise` and `tools/registry`, because Typst cannot discover and import source files dynamically.
 
 Generated website files go to the ignored `dist/` directory. Teacher PDFs go to the ignored `output/pdf/` directory.
 
 ## Adding an exercise
 
-`just new-exercise <serial>` creates `content/exercises/<serial-padded-to-four-digits>.typ` as a draft, refuses to overwrite an existing file, and regenerates `content/exercise-registry.typ`. No manual catalog import is needed.
+`just new-exercise <serial>` creates `content/exercises/<serial-padded-to-four-digits>.typ` from `templates/exercise-draft.typ`, refuses to overwrite an existing file, and regenerates `content/exercise-registry.typ`. No manual catalog import is needed.
 
 Typst requires static imports, so `content/exercise-registry.typ` is generated from the numbered files and committed. Run `just registry` after adding or removing a file by hand. Builds and CI reject a stale registry. Selections and teacher card batches refer to serials through `exercise-at`, for example `(1, 4, 9).map(exercise-at)`.
 
@@ -88,7 +87,7 @@ An exercise record looks like this:
 
 `statement_parts` contains one or two content blocks. A one-part exercise gets a branded reverse; a two-part exercise continues on the reverse. The controlled topic vocabulary and all validation rules live in `lib/model.typ`.
 
-Figures use repository-relative paths under `assets/` and require meaningful alternative text. Drafts do not appear on the public site or response sheets. Empty hints, enrichment, and solutions are deliberately omitted from public pages and reported by the checks.
+Figures use repository-relative paths under `assets/` and require meaningful alternative text. Drafts do not appear on the public site or response sheets. Empty hints, enrichment, and solutions are deliberately omitted from public pages; the generated `content-status.json` records their presence without blocking publication.
 
 ## Selections and response sheets
 
@@ -102,20 +101,20 @@ Each response pack has one A4 answer sheet followed by printable QR sheets. Ever
 
 ## Validation
 
-`just check` rebuilds the pilot site and its three teacher PDFs, then verifies:
+`just check` intentionally stays lightweight. It checks that the generated exercise registry is current, then asks Typst to compile the website, card batch, and every stored response selection. Typst itself validates:
 
-- neutral exercise schema, structured sources, controlled topics, difficulty bounds, selections, and golden identifiers;
-- an exact generated-registry check, so adding a file never requires hand-maintained import aliases;
-- generated HTML links, assets, metadata, filtering hooks, and native disclosure semantics;
-- A4 page dimensions and the card-imposition structure;
-- QR destinations decoded at print resolution and checked against the exercise URLs;
-- smoke fixtures for disclosures and response sheets with four and eight rows;
-- missing optional content and accidental published placeholders.
+- required exercise and source fields;
+- controlled topics, difficulty bounds, stable identifiers, and unique ordered records;
+- valid published selection membership;
+- the pilot or full publication totals and the pilot’s golden ID mapping;
+- Typst syntax, imports, referenced assets, and template assertions.
+
+There is deliberately no DOM crawler, PDF parser, rendered-QR decoder, copy-count test, or response-page-count test. Output review remains a human print and browser check.
 
 Before a production print, also inspect all rendered pages, print a 100% short-edge duplex proof, check alignment after cutting, and scan the paper with the phones students will use.
 
 ## Deployment
 
-`.github/workflows/pages.yml` builds and validates pull requests. A successful push to `main` deploys only the site bundle through GitHub Pages; the private teacher workflow remains source-controlled but its generated PDFs are not uploaded to the public site.
+`.github/workflows/pages.yml` compiles pull requests. A successful push to `main` deploys only the site bundle through GitHub Pages; the private teacher workflow remains source-controlled but its generated PDFs are not uploaded to the public site.
 
 The workflow stays on the `pilot` profile until the remaining exercises have been migrated and reviewed. The `full` profile is the final 83-exercise and 14-selection publication gate.

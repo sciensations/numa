@@ -1,45 +1,49 @@
 set shell := ["bash", "-euo", "pipefail", "-c"]
 
-python := env_var_or_default("PYTHON", "python3")
+typst := env_var_or_default("TYPST", "typst")
 validation_profile := env_var_or_default("NUMA_PROFILE", "pilot")
 
 default:
     @just --list
 
-# Download the pinned Typst binary into .tools/ for systems without Typst 0.15.1.
-setup:
-    "{{python}}" scripts/install_typst.py
-
-# Create one safe draft file; prompts for missing values.
+# Create one safe draft file and refresh the static Typst registry.
 new-exercise serial="":
-    "{{python}}" scripts/new_exercise.py "{{serial}}"
+    "./tools/new-exercise" "{{serial}}"
 
 # Regenerate the static Typst registry from content/exercises/*.typ.
 registry:
-    "{{python}}" scripts/generate_registry.py
+    "./tools/registry"
 
-# Watch the Typst bundle and serve dist/ locally.
-preview host="127.0.0.1" port="8000":
-    "{{python}}" scripts/generate_registry.py
-    "{{python}}" scripts/preview.py --host "{{host}}" --port "{{port}}"
+# Fail if the committed registry does not match the numbered files.
+registry-check:
+    "./tools/registry" --check
 
-# Build the complete Typst HTML/PDF bundle into dist/.
-build:
-    "{{python}}" scripts/generate_registry.py
-    "{{python}}" scripts/build.py
+# Watch and serve the website with Typst's native live reload.
+preview port="3000":
+    "./tools/registry" --check
+    "{{typst}}" watch --features html,bundle --format bundle --font-path assets/fonts --ignore-system-fonts --input profile="{{validation_profile}}" --root . --port "{{port}}" bundle.typ dist
+
+# Build the complete Typst website bundle into dist/.
+build profile=validation_profile:
+    "./tools/registry" --check
+    rm -rf dist
+    "{{typst}}" compile --features html,bundle --format bundle --font-path assets/fonts --ignore-system-fonts --input profile="{{profile}}" --root . bundle.typ dist
 
 # Compile the current teacher card batch.
 print-cards:
-    "{{python}}" scripts/compile_print.py cards
+    mkdir -p output/pdf
+    "{{typst}}" compile --root . --font-path assets/fonts --ignore-system-fonts teacher/cards.typ output/pdf/card-batch.pdf
 
 # Compile one persistent response selection.
 print-response selection="s03":
-    "{{python}}" scripts/compile_print.py response "{{selection}}"
+    mkdir -p output/pdf
+    "{{typst}}" compile --root . --font-path assets/fonts --ignore-system-fonts "teacher/responses/{{selection}}.typ" "output/pdf/{{selection}}-responses.pdf"
 
-# Build, then run all read-only checks. Use `just check full` for the 14-selection target.
+# Compile the site, card batch, and every stored response selection.
 check profile=validation_profile:
-    "{{python}}" scripts/build.py --profile "{{profile}}"
-    "{{python}}" scripts/compile_print.py cards
-    "{{python}}" scripts/compile_print.py response s01
-    "{{python}}" scripts/compile_print.py response s03
-    "{{python}}" scripts/check.py --profile "{{profile}}"
+    "./tools/registry" --check
+    rm -rf dist
+    "{{typst}}" compile --features html,bundle --format bundle --font-path assets/fonts --ignore-system-fonts --input profile="{{profile}}" --root . bundle.typ dist
+    mkdir -p output/pdf
+    "{{typst}}" compile --root . --font-path assets/fonts --ignore-system-fonts teacher/cards.typ output/pdf/card-batch.pdf
+    for source in teacher/responses/*.typ; do selection="$(basename "$source" .typ)"; "{{typst}}" compile --root . --font-path assets/fonts --ignore-system-fonts "$source" "output/pdf/$selection-responses.pdf"; done

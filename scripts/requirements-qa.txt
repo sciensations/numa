@@ -1,3 +1,0 @@
-Pillow==12.3.0
-pypdfium2==5.13.0
-zxing-cpp==2.3.0

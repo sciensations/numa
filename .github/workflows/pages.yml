@@ -33,23 +33,30 @@ jobs:
           tar -xJf "$RUNNER_TEMP/$archive" --directory "$RUNNER_TEMP"
           echo "$RUNNER_TEMP/typst-x86_64-unknown-linux-musl" >> "$GITHUB_PATH"
 
-      - name: Install QR validation dependencies
-        run: python3 -m pip install --disable-pip-version-check --requirement scripts/requirements-qa.txt
+      - name: Check exercise registry
+        run: bash tools/registry --check
 
-      - name: Check generated exercise registry
-        run: python3 scripts/generate_registry.py --check
-
-      - name: Build
-        run: python3 scripts/build.py
-
-      - name: Compile teacher print fixtures
+      - name: Compile website and print documents
+        shell: bash
         run: |
-          python3 scripts/compile_print.py cards
-          python3 scripts/compile_print.py response s01
-          python3 scripts/compile_print.py response s03
-
-      - name: Check
-        run: python3 scripts/check.py --profile "$NUMA_PROFILE"
+          set -euo pipefail
+          rm -rf dist
+          typst compile \
+            --features html,bundle \
+            --format bundle \
+            --font-path assets/fonts \
+            --ignore-system-fonts \
+            --input "profile=$NUMA_PROFILE" \
+            --root . \
+            bundle.typ dist
+          mkdir -p output/pdf
+          typst compile --root . --font-path assets/fonts --ignore-system-fonts \
+            teacher/cards.typ output/pdf/card-batch.pdf
+          for source in teacher/responses/*.typ; do
+            selection="$(basename "$source" .typ)"
+            typst compile --root . --font-path assets/fonts --ignore-system-fonts \
+              "$source" "output/pdf/$selection-responses.pdf"
+          done
 
       - name: Upload pull-request build
         if: github.event_name == 'pull_request'

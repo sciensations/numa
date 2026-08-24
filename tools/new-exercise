@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+EXERCISES="$ROOT/content/exercises"
+serial="${1:-}"
+
+if [[ -z "$serial" ]]; then
+  max=0
+  for path in "$EXERCISES"/[0-9][0-9][0-9][0-9].typ; do
+    [[ -e "$path" ]] || continue
+    stem="$(basename "$path" .typ)"
+    value=$((10#$stem))
+    ((value > max)) && max=$value
+  done
+  serial=$((max + 1))
+fi
+
+[[ "$serial" =~ ^[0-9]+$ ]] || {
+  printf 'error: exercise serial must be a positive integer\n' >&2
+  exit 1
+}
+value=$((10#$serial))
+((value >= 1 && value <= 9999)) || {
+  printf 'error: exercise serial must be between 1 and 9999\n' >&2
+  exit 1
+}
+
+printf -v padded '%04d' "$value"
+target="$EXERCISES/$padded.typ"
+[[ ! -e "$target" ]] || {
+  printf 'error: refusing to overwrite content/exercises/%s.typ\n' "$padded" >&2
+  exit 1
+}
+
+temporary="$(mktemp "$EXERCISES/.$padded.XXXXXX")"
+trap 'rm -f "$temporary"' EXIT
+sed "s/__SERIAL__/$value/g" "$ROOT/templates/exercise-draft.typ" >"$temporary"
+mv "$temporary" "$target"
+trap - EXIT
+"$ROOT/tools/registry"
+printf 'Created content/exercises/%s.typ with draft status\n' "$padded"
