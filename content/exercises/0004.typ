@@ -44,8 +44,7 @@
 }
 
 
-#let item = exercise(
-  serial: 4,
+#let item = exercise.with(
   title: [Pyramide Mathilde],
   topics: ("nombres-divisibilite", "suites-motifs"),
   difficulty: 3.25,

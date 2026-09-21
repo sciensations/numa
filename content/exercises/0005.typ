@@ -1,7 +1,6 @@
 #import "../../lib/model.typ": exercise
 
-#let item = exercise(
-  serial: 5,
+#let item = exercise.with(
   title: [Le code],
   topics: ("nombres-divisibilite", "logique-strategie"),
   difficulty: 4.0,

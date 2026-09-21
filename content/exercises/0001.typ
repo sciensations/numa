@@ -1,8 +1,7 @@
 #import "../../lib/authoring.typ": exercise-columns, exercise-image
 #import "../../lib/model.typ": exercise
 
-#let item = exercise(
-  serial: 1,
+#let item = exercise.with(
   title: [Relève de la Garde],
   topics: ("arithmetique", "logique-strategie"),
   difficulty: 1.5,

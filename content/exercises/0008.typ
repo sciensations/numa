@@ -1,8 +1,7 @@
 #import "../../lib/authoring.typ": exercise-image
 #import "../../lib/model.typ": exercise
 
-#let item = exercise(
-  serial: 8,
+#let item = exercise.with(
   title: [Les bosses],
   topics: ("arithmetique", "optimisation"),
   difficulty: 1.5,

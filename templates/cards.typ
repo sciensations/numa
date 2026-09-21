@@ -7,7 +7,7 @@
   
   let stars = () 
   while stars.len() < a {
-    stars.push(text(size:7mm,emoji.star))
+    stars.push(text(font: "Noto Color Emoji", size: 7mm, emoji.star))
   }
   stars.join(h(1mm))
 }

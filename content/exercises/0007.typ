@@ -1,8 +1,7 @@
 #import "../../lib/authoring.typ": exercise-diagram
 #import "../../lib/model.typ": exercise
 
-#let item = exercise(
-  serial: 7,
+#let item = exercise.with(
   title: [Le patron du dé],
   topics: ("geometrie", "logique-strategie"),
   difficulty: 1.0,

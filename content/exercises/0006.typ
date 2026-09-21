@@ -1,8 +1,7 @@
 #import "../../lib/authoring.typ": exercise-center
 #import "../../lib/model.typ": exercise
 
-#let item = exercise(
-  serial: 6,
+#let item = exercise.with(
   title: [Plus ou moins un],
   topics: ("combinatoire", "logique-strategie", "optimisation"),
   difficulty: 4.5,

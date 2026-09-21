@@ -1,8 +1,7 @@
 #import "../../lib/authoring.typ": exercise-image
 #import "../../lib/model.typ": exercise
 
-#let item = exercise(
-  serial: 11,
+#let item = exercise.with(
   title: [Les cinq jetons],
   topics: ("arithmetique", "optimisation", "logique-strategie"),
   difficulty: 2.5,

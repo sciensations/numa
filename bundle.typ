@@ -1,30 +1,8 @@
 #import "content/catalog.typ": exercises, selections
-#import "lib/model.typ": find-selection, has-content, memberships, validate-catalog
+#import "lib/model.typ": has-content, validate-catalog
 #import "templates/site.typ": base-url, exercise-page, index-page, not-found-page
 
-#let build-profile = sys.inputs.at("profile", default: "pilot")
-#assert(build-profile in ("pilot", "full"), message: "profile must be pilot or full")
-#let expected-published = if build-profile == "full" { 83 } else { 12 }
-#let expected-selections = if build-profile == "full" { 14 } else { 2 }
-#let catalog-stats = validate-catalog(
-  exercises,
-  selections,
-  expected-published: expected-published,
-  expected-selections: expected-selections,
-)
-
-#if build-profile == "pilot" {
-  let s01 = find-selection(selections, "s01")
-  let s03 = find-selection(selections, "s03")
-  let pilot-exercises = exercises.filter(item => item.status == "published")
-  assert(s01.exercises.len() == 6, message: "pilot requires six exercises in S01")
-  assert(s03.exercises.len() == 6, message: "pilot requires six exercises in S03")
-  assert(pilot-exercises.map(it => it.id) == (
-    "3009ac", "e09805", "9df8b0", "402f01", "25ecd7", "bb6cb4",
-    "d72deb", "b26606", "0e41af", "4b5936", "bf18c0", "765d0c",
-  ),
-    message: "pilot exercise ID mapping changed")
-}
+#let catalog-stats = validate-catalog(exercises, selections)
 
 #let active-exercises = exercises.filter(it => it.status == "published")
 

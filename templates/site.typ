@@ -136,7 +136,7 @@
             "data-topics": item.topics.join(" "),
             "data-difficulty": str(item.difficulty),
             "data-source": item.source.organization,
-            "data-selections": used-in.map(it => it.id).join(" "),
+            "data-selections": used-in.map(it => it.id).join(" ", default: ""),
           ))[
             #_a("e/" + item.id + ".html", [
               #html.elem("span", attrs: (class: "catalog-card__id"))[ID #upper(item.id)]

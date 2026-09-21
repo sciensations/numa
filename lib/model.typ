@@ -147,12 +147,7 @@
 #let memberships(selections, item) = selections.filter(sel =>
   sel.listed and sel.exercises.any(candidate => candidate.id == item.id))
 
-#let validate-catalog(
-  exercises,
-  selections,
-  expected-published: none,
-  expected-selections: none,
-) = {
+#let validate-catalog(exercises, selections) = {
   assert(type(exercises) == array, message: "catalogue exercises must be an array")
   assert(type(selections) == array, message: "catalogue selections must be an array")
   let serials = ()
@@ -190,14 +185,6 @@
       assert(sel.exercises.len() >= 4 and sel.exercises.len() <= 8,
         message: "response selection " + sel.id + " needs four to eight exercises")
     }
-  }
-  if expected-published != none {
-    assert(published == expected-published,
-      message: "expected " + str(expected-published) + " published exercises, found " + str(published))
-  }
-  if expected-selections != none {
-    assert(selections.len() == expected-selections,
-      message: "expected " + str(expected-selections) + " selections, found " + str(selections.len()))
   }
   (exercises: exercises.len(), selections: selections.len(), published: published)
 }

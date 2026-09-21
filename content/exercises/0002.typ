@@ -1,7 +1,6 @@
 #import "../../lib/model.typ": exercise
 
-#let item = exercise(
-  serial: 2,
+#let item = exercise.with(
   title: [Les chaussures],
   topics: ("combinatoire", "logique-strategie"),
   difficulty: 2.25,
