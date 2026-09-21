@@ -5,8 +5,8 @@
 
 #let item = selection(
   id: "s03",
-  title: [Fiche 1 : la parité],
-  date: "2026-09-09",
+  title: [Fiche de problèmes ],
+  date: "09.09.2026",
   year: 2026,
   purpose: "response",
   listed: true,

@@ -165,3 +165,56 @@
     if sheet-index < sheet-count - 1 { pagebreak() }
   }
 }
+
+
+
+#let _branded-back-help = {
+  let accent = accent-for(1)
+  block(
+    width: 148mm,
+    height: 105mm,
+    inset: 6mm,
+    stroke: 0.3pt + numa-muted.lighten(35%),
+    fill: none,
+  )[
+    #block(
+      width: 100%,
+      height: 100%,
+      fill: accent.lighten(74%),
+      radius: 3mm,
+      inset: 7mm,
+    )[ 
+      #align(center + horizon)[
+        #v(3fr)
+        #numa-logo(width: 52mm)
+        #v(2fr)
+        #set text(size: 13pt, weight: "bold", fill: numa-blue-dark)
+        Petit guide du détective #emoji.magnify
+        
+        
+        
+        #v(2fr)
+      ]
+    ]
+  ]
+}
+#let help-doc(n,body) = {
+  
+  let sheet-count = calc.ceil(n / 4)
+
+  set page(width: 297mm, height: 210mm, margin: 0mm, fill: white)
+  set text(font: print-fonts, lang: "fr", fill: numa-ink)
+  set par(justify: false, leading: 0.68em)
+
+  for sheet-index in range(sheet-count) {
+    let group = ()
+    for offset in range(4) {
+      group.push(body)
+    }
+
+    _sheet(group)
+    pagebreak()
+    _sheet(group.map(x=>_branded-back-help))
+    if sheet-index < sheet-count - 1 { pagebreak() }
+  }
+}

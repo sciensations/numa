@@ -2,7 +2,7 @@
 
 #let item = exercise(
   serial: 9,
-  title: [Le nombre mystérieux],
+  title: [Nombre mystérieux],
   topics: ("arithmetique", "logique-strategie"),
   difficulty: 2.0,
   content: [

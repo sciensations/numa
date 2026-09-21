@@ -13,7 +13,7 @@
     
   qrcode(
           exercise-url(item),
-          width: 20mm,
+          width: 14mm,
           quiet-zone: true,
           background-fill: none,
         ),
@@ -31,23 +31,25 @@
     message: "response sheets support four to eight exercises; " + selection.id
       + " has " + str(count))
 
-  set page(width: 210mm, height: 297mm, margin: 10mm, fill: white)
+  set page(height: 210mm, width: 297mm, margin: 20mm, fill: white)
   set text(font: print-fonts, lang: "fr", size: 9.5pt, fill: numa-ink)
   set par(justify: false, leading: 0.6em)
 
+  
+  let rep-fields = {
+  
   grid(
     columns: (35mm, 1fr),
     align: (left + horizon, right + horizon),
-    numa-logo(width: 32mm),
+    numa-logo(width: 26mm),
     [
-      #set text(size: 17pt, weight: "bold", fill: numa-blue-dark)
-      Feuille de réponses
-      #linebreak()
-      #set text(size: 9pt, weight: "regular", fill: numa-muted)
-      #upper(selection.id) · #selection.title · #selection.date
+      #set text(size: 16pt, weight: "bold", fill: numa-blue-dark)
+      Feuille de réponses #upper(selection.id)\
+      #set text(size: 7.3pt, weight: "regular", fill: numa-muted)
+       #selection.title · #selection.date
     ],
   )
-  v(4mm)
+  v(0mm)
 
   grid(
     columns: (1fr, 1fr),
@@ -55,53 +57,49 @@
     [*Prénom et nom :* #box(width: 1fr, baseline: 1pt, line(length: 100%, stroke: 0.5pt))],
     //[*Date :* #box(width: 1fr, baseline: 1pt, line(length: 100%, stroke: 0.5pt))],
   )
-  v(3mm)
 
   set table(stroke: 0.45pt + numa-muted.lighten(30%), inset: 2mm)
   table(
-    columns: (1fr, 2fr, 1fr),
+    columns: (35mm, 3fr, 1fr),
     align: (center + horizon, left + top, center + horizon, center + horizon),
     table.header(
       table.cell(fill: numa-blue.lighten(65%))[*Problème*],
       table.cell(fill: numa-blue.lighten(65%))[*Réponse et explication*],
       table.cell(fill: numa-blue.lighten(65%))[*Validation*],
     ),
-    ..exercises.enumerate().map(((index, item)) => (
-      table.cell(fill: accent-for(item.serial).lighten(72%))[
-        #block(height: answer-row-height)[
-          #set text(weight: "bold", fill: numa-blue-dark)
-          #(index + 1) · #item.title
-          #linebreak()
-          #text(size: 6.5pt, weight: "regular")[ID #upper(item.id)]
-        ]
-      ],
-      [],
-      [],
-      // [
-      //   #set text(size: 5.5pt, fill: numa-muted)
-      //   #link(exercise-url(item))[
-      //     #text("https://sciensations.github.io/")
-      //     #linebreak()
-      //     #text("numa/e/" + item.id + ".html")
-      //   ]
-      // ],
-    )).flatten(),
+    ..exercises.enumerate().map(((index, item)) =>((table.cell(breakable: false,
+    // inset: 4mm
+  )[
+        #set text(weight: "bold", fill: numa-blue-dark)
+        #item.title
+        #v(-3mm)
+        #exercise-qrid(item)
+      ],[],[]))).flatten(),
   )
-
-  v(2mm)
+  v(-2mm)
   align(right)[
     #set text(size: 7pt, fill: numa-muted)
     Scanne le code après la séance pour retrouver l’énoncé et les compléments.
-  ]
+  ]}
+
+  grid(
+    columns: 2,
+    gutter: 40mm,
+    rep-fields,
+    rep-fields
+  )
 
   
 
   pagebreak()
 
   table(
-    columns: (1fr,1fr,1fr,1fr),
+    columns: (35mm,35mm,35mm,35mm,35mm,35mm),
+    // gutter: 4mm,
     align: center,
-    ..exercises.map(item => ((table.cell(breakable: false)[
+    ..exercises.map(item => ((table.cell(breakable: false,stroke: black.lighten(90%)
+    // inset: 4mm
+  )[
         #set text(weight: "bold", fill: numa-blue-dark)
         #item.title
         #v(-3mm)

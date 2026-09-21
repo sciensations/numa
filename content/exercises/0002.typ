@@ -2,7 +2,7 @@
 
 #let item = exercise(
   serial: 2,
-  title: [La paire de chaussures],
+  title: [Les chaussures],
   topics: ("combinatoire", "logique-strategie"),
   difficulty: 2.25,
   content: [

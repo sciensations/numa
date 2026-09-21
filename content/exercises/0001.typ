@@ -3,7 +3,7 @@
 
 #let item = exercise(
   serial: 1,
-  title: [La relève de la Garde],
+  title: [Relève de la Garde],
   topics: ("arithmetique", "logique-strategie"),
   difficulty: 1.5,
   content: [

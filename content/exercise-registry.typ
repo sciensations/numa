@@ -12,8 +12,8 @@
 #import "exercises/0010.typ": item as ex0010
 #import "exercises/0011.typ": item as ex0011
 #import "exercises/0012.typ": item as ex0012
-
-#let exercises = (ex0001, ex0002, ex0003, ex0004, ex0005, ex0006, ex0007, ex0008, ex0009, ex0010, ex0011, ex0012,)
+#import "exercises/0013.typ": item as ex0013
+#let exercises = (ex0001, ex0002, ex0003, ex0004, ex0005, ex0006, ex0007, ex0008, ex0009, ex0010, ex0011, ex0012,ex0013)
 
 #let exercise-at(serial) = {
   let matches = exercises.filter(item => item.serial == serial)

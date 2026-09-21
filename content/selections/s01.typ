@@ -5,7 +5,7 @@
 
 #let item = selection(
   id: "s01",
-  title: [Bienvenue au cercle ! — énigmes de rentrée],
+  title: [Bienvenue au cercle ! - énigmes de rentrée],
   date: "26.08.2026",
   year: 2026,
   purpose: "response",
