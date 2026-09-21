@@ -32,21 +32,24 @@
 
 #let validate-source(source, owner) = {
   assert(type(source) == dictionary, message: owner + " source must be a dictionary")
-  for key in ("organization", "competition", "year", "problem", "coefficient", "tracker_row", "attribution") {
+  for key in ("organization", "attribution") {
     let _value = _required(source, key, owner + " source")
   }
   assert(type(source.organization) == str and source.organization.trim() != "",
     message: owner + " source organization is required")
-  assert(type(source.competition) == str and source.competition.trim() != "",
-    message: owner + " source competition is required")
-  assert(type(source.year) == int and source.year >= 1900,
-    message: owner + " source year must be an integer")
-  assert(type(source.problem) == int and source.problem >= 1,
-    message: owner + " source problem must be positive")
-  assert(type(source.coefficient) == int and source.coefficient >= 1,
-    message: owner + " source coefficient must be positive")
-  assert(type(source.tracker_row) == int and source.tracker_row >= 1,
-    message: owner + " source tracker row must be positive")
+  // Classics and Numa originals have no competition/index entry. Keep unknown
+  // bibliographic fields absent instead of inventing a date or problem number.
+  let competition = source.at("competition", default: none)
+  assert(competition == none or (type(competition) == str and competition.trim() != ""),
+    message: owner + " source competition must be non-empty when supplied")
+  let year = source.at("year", default: none)
+  assert(year == none or (type(year) == int and year >= 1900),
+    message: owner + " source year must be an integer when supplied")
+  for key in ("problem", "coefficient", "tracker_row") {
+    let value = source.at(key, default: none)
+    assert(value == none or (type(value) == int and value >= 1),
+      message: owner + " source " + key + " must be positive when supplied")
+  }
   assert(has-content(source.attribution), message: owner + " source attribution is required")
   source
 }

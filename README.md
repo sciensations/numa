@@ -39,6 +39,7 @@ The useful local commands are:
 just preview
 just build
 just print-cards
+just print-set s05
 just print-response s01
 just print-response s03
 just check
@@ -52,8 +53,8 @@ Generated website files go to the ignored `dist/` directory. Teacher PDFs go to 
 
 To add the next exercise:
 
-1. Copy `templates/exercise-draft.typ` to `content/exercises/0014.typ` in your editor or the Typst web app.
-2. Set `last-serial` to `14` in `content/exercise-registry.typ`.
+1. Find the next serial in `teacher/catalog.typ`, then copy `templates/exercise-draft.typ` to that four-digit filename under `content/exercises/`.
+2. Set `last-serial` to that serial in `content/exercise-registry.typ`.
 3. Edit the title, content, topics, difficulty, and source. Set `status: "published"` when it is ready.
 
 The registry imports files from `0001.typ` through `last-serial` and supplies each record's serial from its filename. Keep this numbering contiguous. A missing file in that range causes an import error; files beyond `last-serial` are not loaded.
@@ -84,6 +85,8 @@ An exercise record looks like this:
 
 `exercise.with(...)` leaves the serial for the registry to supply. The default status is `"draft"`; hints, enrichment, and solution are optional and empty by default.
 
+Every source needs an `organization` and an `attribution`. Competition, year, problem number, coefficient, and index row can be omitted or set to `none` when unavailable. Do not invent competition metadata for a classic puzzle or a Numa original. `tracker_row` is the referenced exercise index line, not the row number in `suivi_problemes_utilises.xlsx`.
+
 `content` is the complete author-controlled body of one card side. Text, diagrams, images, spacing, columns, and local layout all belong in that single Typst block. The shared template adds only the title frame and the branded reverse, and compilation rejects a body that exceeds the front's safe area. The controlled topic vocabulary and validation rules live in `lib/model.typ`.
 
 For visuals that must work in print and experimental HTML export, import the needed helpers from `lib/authoring.typ` inside the exercise file. `exercise-image` places an image, `exercise-diagram` preserves a code-drawn layout, `exercise-center` keeps a semantic table centered, and `exercise-columns` provides responsive side-by-side content. They are called exactly where the author wants the visual; there is no separate figure field or template-selected layout. Image paths start at `/assets/` and every visual requires meaningful alternative text.
@@ -96,13 +99,15 @@ A selection under `content/selections/` stores a label, optional year/term metad
 
 To make an ad hoc card deck, change only the serial tuple in `teacher/cards.typ`. Selections and teacher card batches look up serials through `exercise-at`, for example `(1, 4, 9).map(exercise-at)`. To preserve a response sheet for later reuse, add a named selection with a `serials` tuple and a small entrypoint under `teacher/responses/`.
 
+The original problem sets now have matching entrypoints under `teacher/cards/` and `teacher/responses/`. `just print-set s05` builds both PDFs for S05; replace `s05` with any selection ID. These work in the Typst web app too. The [set index](content/sets.md) lists their source files and exercise serials. `teacher/cards.typ` remains an independent scratch batch.
+
 Cards are A6 cells imposed four-up on A4, both in horizontal orientation. Front sheets are followed by horizontally mirrored backs for short-edge duplex printing. Print at 100%, test one duplex sheet, cut on the center marks, and laminate.
 
 Each response pack has one A4 answer sheet followed by printable QR sheets. Every exercise code is repeated 12 times for cutting and distribution; every copy points directly to the independent exercise page and carries the printed hexadecimal identifier. The current six-exercise selections produce one answer page and two QR pages.
 
 ## Validation
 
-`just check` asks Typst to compile the website, card batch, and every stored response selection. Typst validates:
+`just check` asks Typst to compile the website, scratch card batch, and every stored card and response selection. Typst validates:
 
 - required exercise and source fields;
 - controlled topics, difficulty bounds, stable identifiers, and unique ordered records;

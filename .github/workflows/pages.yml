@@ -47,6 +47,11 @@ jobs:
           mkdir -p output/pdf
           typst compile --root . --font-path assets/fonts --ignore-system-fonts \
             teacher/cards.typ output/pdf/card-batch.pdf
+          for source in teacher/cards/*.typ; do
+            selection="$(basename "$source" .typ)"
+            typst compile --root . --font-path assets/fonts --ignore-system-fonts \
+              "$source" "output/pdf/$selection-cards.pdf"
+          done
           for source in teacher/responses/*.typ; do
             selection="$(basename "$source" .typ)"
             typst compile --root . --font-path assets/fonts --ignore-system-fonts \

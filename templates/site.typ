@@ -142,7 +142,7 @@
               #html.elem("span", attrs: (class: "catalog-card__id"))[ID #upper(item.id)]
               #html.elem("strong", attrs: (class: "catalog-card__title"))[#item.title]
               #html.elem("span", attrs: (class: "catalog-card__meta"))[
-                Niveau #_difficulty-label(item.difficulty) · #item.source.organization #item.source.year
+                Niveau #_difficulty-label(item.difficulty) · #item.source.organization #item.source.at("year", default: none)
               ]
               #html.elem("span", attrs: (class: "chip-row"))[
                 #for topic in item.topics {

@@ -19,15 +19,22 @@ print-cards:
     mkdir -p output/pdf
     "{{typst}}" compile --root . --font-path assets/fonts --ignore-system-fonts teacher/cards.typ output/pdf/card-batch.pdf
 
+# Compile a stored set's card deck and response pack.
+print-set selection="s05":
+    mkdir -p output/pdf
+    "{{typst}}" compile --root . --font-path assets/fonts --ignore-system-fonts "teacher/cards/{{selection}}.typ" "output/pdf/{{selection}}-cards.pdf"
+    "{{typst}}" compile --root . --font-path assets/fonts --ignore-system-fonts "teacher/responses/{{selection}}.typ" "output/pdf/{{selection}}-responses.pdf"
+
 # Compile one persistent response selection.
 print-response selection="s03":
     mkdir -p output/pdf
     "{{typst}}" compile --root . --font-path assets/fonts --ignore-system-fonts "teacher/responses/{{selection}}.typ" "output/pdf/{{selection}}-responses.pdf"
 
-# Compile the site, card batch, and every stored response selection.
+# Compile the site, scratch batch, and every stored card/response selection.
 check:
     rm -rf dist
     "{{typst}}" compile --features html,bundle --format bundle --font-path assets/fonts --ignore-system-fonts --root . bundle.typ dist
     mkdir -p output/pdf
     "{{typst}}" compile --root . --font-path assets/fonts --ignore-system-fonts teacher/cards.typ output/pdf/card-batch.pdf
+    for source in teacher/cards/*.typ; do selection="$(basename "$source" .typ)"; "{{typst}}" compile --root . --font-path assets/fonts --ignore-system-fonts "$source" "output/pdf/$selection-cards.pdf"; done
     for source in teacher/responses/*.typ; do selection="$(basename "$source" .typ)"; "{{typst}}" compile --root . --font-path assets/fonts --ignore-system-fonts "$source" "output/pdf/$selection-responses.pdf"; done
