@@ -2,12 +2,15 @@
 
 #let item = exercise.with(
   title: [L'ordinateur malicieux],
-  topics: ("logique"),
+  topics: ("logique-strategie",),
   difficulty: 2,
   content: [
-    Sur mon écran d'ordinateur, j'avais écrit une opération. Celui-ci m'a fait une farce : il a transformé les 4 en 9, les 9 en 4, les - en +, les + en -, les x en + et les + en x.
-Voici l'opération transformée
-(4 ÷ 19) - (49 x 2) + 99 + (9÷5).
+    Sur mon écran d'ordinateur, j'avais écrit une opération. Celui-ci m'a fait une farce : il a transformé les 4 en 9, les 9 en 4, les $-$ en $+$, les $+$ en $-$, les $times$ en $div$ et les $div$ en $times$.
+    
+Voici l'opération transformée : 
+
+(4 $div$ 19) $-$ (49 $times$ 2) $+$ 99 $+$ (9 $div$ 5).
+
 Décodez-la et donnez-en la réponse.
   ],
   source: (

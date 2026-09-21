@@ -2,7 +2,7 @@
 
 #let item = exercise.with(
   title: [Un peu de logique],
-  topics: ("logique"),
+  topics: ("logique-strategie",),
   difficulty: 2,
   content: [
     Laquelle des cinq propositions ci-dessous est la négation (ou le contraire) de :

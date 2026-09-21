@@ -2,7 +2,7 @@
 
 #let item = exercise.with(
   title: [Les paresseux],
-  topics: ("logique"),
+  topics: ("logique-strategie",),
   difficulty: 2,
   content: [
     Dans une classe de 29 élèves, à la question :
