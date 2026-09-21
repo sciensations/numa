@@ -1,6 +1,6 @@
 // Copy the draft template to the next numbered file, then increase this value.
 // Keep all allocated files, including drafts: filenames determine permanent IDs.
-#let last-serial = 84
+#let last-serial = 87
 
 #assert(type(last-serial) == int and last-serial >= 1 and last-serial <= 9999,
   message: "last-serial must be the highest allocated four-digit exercise number")
