@@ -21,7 +21,6 @@
         ID #upper(item.id)])
 }
 
-#let qr-copies-per-exercise = 12
 
 #let responses-document(selection) = {
   let exercises = published-exercises(selection.exercises)
@@ -91,19 +90,4 @@
 
   
 
-  pagebreak()
-
-  table(
-    columns: (35mm,35mm,35mm,35mm,35mm,35mm),
-    // gutter: 4mm,
-    align: center,
-    ..exercises.map(item => ((table.cell(breakable: false,stroke: black.lighten(90%)
-    // inset: 4mm
-  )[
-        #set text(weight: "bold", fill: numa-blue-dark)
-        #item.title
-        #v(-3mm)
-        #exercise-qrid(item)
-      ],) * qr-copies-per-exercise)).flatten(),
-  )
 }

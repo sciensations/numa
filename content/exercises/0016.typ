@@ -12,6 +12,8 @@
     Camille : « Je dirais qu'Abel en a lu au moins deux. »
 
     Un seul des trois amis n'a pas menti. Combien Abel a-t-il lu de livres, sachant qu'il en a lu au moins un ?
+
+        #align(center)[#image("../../assets/exercises/s05/livress05.png", width:35%)]
   ],
   source: (
     organization: "FSJM",

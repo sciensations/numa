@@ -12,6 +12,8 @@ Voici l'opération transformée :
 (4 $div$ 19) $-$ (49 $times$ 2) $+$ 99 $+$ (9 $div$ 5).
 
 Décodez-la et donnez-en la réponse.
+
+#align(center)[#image("../../assets/exercises/s05/ordis05.png", width:30%)]
   ],
   source: (
     organization: "FSJM",

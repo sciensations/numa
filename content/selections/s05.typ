@@ -1,8 +1,8 @@
 #import "../../lib/model.typ": selection
 #import "../exercise-registry.typ": exercise-at
 
-#let serials = (14, 15, 16, 17, 18, 85,86,87)
-
+#let serials = (14, 15, 16, 17, 18, )
+//85,86,87
 #let item = selection(
   id: "s05",
   title: [Fiche de problèmes],

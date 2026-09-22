@@ -10,6 +10,10 @@
     Alain dit : « Bernard est le juste. » Charles dit : « Alain n'est pas le roublard. »
 
     Peux-tu dire qui est qui ?
+
+    #align(center)[#image("../../assets/exercises/s05/menteurss05.png", width:40%)]
+
+    
   ],
   source: (
     organization: "FSJM",

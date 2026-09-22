@@ -9,7 +9,11 @@
 
     Place les six élèves en respectant tous les souhaits (écris l'initiale de chacun).
 
-    Remarque : deux personnes « à côté l'une de l'autre » sont sur le même côté ; un bout de table n'est à côté de personne.
+        #align(center)[#image("../../assets/exercises/s05/tabless05.png", width:25%)]
+
+    Remarque : deux personnes « à côté l'une de l'autre » sont sur le même côté ; un bout de table n'est à côté de personne.¨
+
+    
   ],
   source: (
     organization: "FSJM",

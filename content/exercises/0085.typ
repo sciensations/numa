@@ -15,6 +15,8 @@
 
     
 Combien d'élèves n'ont fait ni leur anglais, ni leurs maths, sachant que 5 élèves ont levé deux fois la main ?
+
+#align(center)[#image("../../assets/exercises/s05/paresseuxs05.png", width:31%)]
   ],
   source: (
     organization: "FSJM",

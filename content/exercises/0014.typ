@@ -8,6 +8,10 @@
     Antoine a beaucoup d'amis. 15 de ses amis aiment résoudre des sudokus, et 18 aiment les opérations codées.
 
     Si on sait que 3 de ses amis aiment les deux types de jeux, combien Antoine a-t-il d'amis qui aiment les jeux (sudokus ou opérations codées) ?
+    #v(0.4cm)
+    #align(center)[#image("../../assets/exercises/s05/antoineS05.png"
+    , width:40%)]
+    
   ],
   source: (
     organization: "FSJM",
