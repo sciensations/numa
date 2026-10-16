@@ -11,7 +11,7 @@ set page(height: 210mm, width: 297mm, margin: 20mm, fill: white)
 
   
   let rep-fields = {
-  grid(columns: 1,row-gutter: 3mm,rows: (auto, auto, 1fr, auto),
+  grid(columns: 1,row-gutter: 4mm,rows: (auto, auto, 1fr, auto),
   grid(
     columns: (35mm, 1fr),
     align: (left + horizon, right + horizon),
