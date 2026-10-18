@@ -1,6 +1,8 @@
 #import "../../lib/model.typ": selection
 #import "../exercise-registry.typ": exercise-at
 
+// Drive: S17_2027-01-13_problemes_quadrillage.docx
+// https://docs.google.com/document/d/1cPZ9LlZEE5wGNKWlXYPgyNqqtI7mhoRL/edit
 #let serials = (37, 38, 39, 40, 41)
 
 #let item = selection(

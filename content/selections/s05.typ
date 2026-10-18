@@ -1,6 +1,8 @@
 #import "../../lib/model.typ": selection
 #import "../exercise-registry.typ": exercise-at
 
+// Drive: S05_2026-09-23_problemes_logique.docx
+// https://docs.google.com/document/d/1tkLy79crKfq8AICNi75-XDD1V8SAMBuu/edit
 #let serials = (14, 15, 16, 17, 18, )
 //85,86,87
 #let item = selection(
