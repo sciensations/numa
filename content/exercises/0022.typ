@@ -8,6 +8,7 @@
     À la fête de l'école, une tombola est organisée. Cent tickets ont été imprimés : quarante portent « bon pour un petit lot », un ticket indique « gros lot », et les autres sont perdants.
 
     Combien de tickets faut-il acheter pour être certain de gagner au moins un lot ?
+     #align(center)[#image("../../assets/exercises/s07/latombola.png", width:28%)]
   ],
   source: (
     organization: "FSJM",

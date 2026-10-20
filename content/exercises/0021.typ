@@ -10,6 +10,8 @@
     Le Mage Hic demande à Paul de choisir, entre 10 et 99, des entiers qui se suivent sans interruption.
 
     Combien de nombres doit-il lui demander, au minimum, pour être sûr qu'il y ait au moins un palindrome parmi eux ?
+
+     #align(center)[#image("../../assets/exercises/s07/lespalindromes.png", width:23%)]
   ],
   source: (
     organization: "FSJM",

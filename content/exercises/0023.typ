@@ -8,6 +8,7 @@
     Dans un sac, il y a 15 billes blanches, 15 noires, 6 rouges et 5 vertes.
 
     Combien de billes, au minimum, faut-il sortir sans les regarder pour être certain d'avoir sorti au moins 10 billes de la même couleur ?
+     #align(center)[#image("../../assets/exercises/s07/billescouleur.png", width:35%)]
   ],
   source: (
     organization: "FSJM",

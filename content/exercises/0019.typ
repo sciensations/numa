@@ -8,6 +8,8 @@
     Lou sait qu'une boîte contient 6 crayons bleus et 3 crayons rouges. Malheureusement, l'éclairage ne permet pas de distinguer les couleurs.
 
     Combien de crayons doit-elle prendre, au minimum, pour être sûre d'emporter au moins un crayon de chaque couleur ?
+
+     #align(center)[#image("../../assets/exercises/s07/danslenoir.png", width:33%)]
   ],
   source: (
     organization: "FSJM",

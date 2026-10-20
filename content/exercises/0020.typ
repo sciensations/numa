@@ -8,6 +8,8 @@
     Le collège de la Promenade compte 400 élèves.
 
     Peux-tu être absolument certain, sans interroger personne, que deux élèves au moins fêtent leur anniversaire le même jour de l'année ? Explique pourquoi.
+#v(5mm)
+     #align(center)[#image("../../assets/exercises/s07/lesanniversaires.png", width:40%)]
   ],
   source: (
     organization: "Cercles mathématiques",
