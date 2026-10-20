@@ -3,7 +3,7 @@
 #let item = exercise.with(
   title: [Dans le noir],
   topics: ("logique-strategie", "combinatoire",),
-  difficulty: 1.25,
+  difficulty: 1,
   content: [
     Lou sait qu'une boîte contient 6 crayons bleus et 3 crayons rouges. Malheureusement, l'éclairage ne permet pas de distinguer les couleurs.
 
